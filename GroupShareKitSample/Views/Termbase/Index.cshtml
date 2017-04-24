@@ -1,0 +1,97 @@
+﻿@using System.Web.Mvc.Html
+@using Sdl.Community.GroupShareKit.Models.Response
+@model GroupShareKitSample.Models.TermbaseViewModel
+
+<div class="row">
+    <h4>Search termbase</h4>
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Search", "Termbase", FormMethod.Post))
+    {
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-md-2 control-label">Searched term:</label>
+                @Html.TextBoxFor(u => u.Search.SearchedTerm, new {@class = "form-control col-md-10", placeholder = "Term"})
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Source language:</label>
+                @Html.TextBoxFor(u => u.Search.SourceLanguage, new {@class = "form-control col-md-10", placeholder = "Source language"})
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Target language:</label>
+                @Html.TextBoxFor(u => u.Search.TargetLanguage, new {@class = "form-control col-md-10", placeholder = "Target language"})
+            </div>
+
+            <div class="form-group">
+                <label for="tbselect" class="col-md-2 control-label">Termbase:</label>
+                <select class="form-control" name="tbselect"id="tbselect">
+                    @foreach (var termbase in Model.Termbases)
+                    {
+                        <option value="@termbase.Id">@termbase.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary"> Search</button>
+            </div>
+        </div>
+    }
+</div>
+
+@if (Model.SearchResult != null)
+{
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Search results</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Term</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var term in Model.SearchResult)
+                    {
+                        <tr>
+                            <td>
+                                <a onclick="editTerm('@term.TermbaseId', @term.ConceptId)"> @term.TermText</a>
+                               
+                            </td>
+
+                            <td>
+                                <a onclick="editTerm('@term.TermbaseId', @term.ConceptId)">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+
+         
+            @*<div id="test">
+                @{ Html.RenderAction("Search");}
+            </div>*@
+           
+        </div>
+       
+    </div>
+}
+@section scripts{
+    <script type="text/javascript">
+        function editTerm(termbaseId,conceptId) {
+            $.ajax({
+                url: '@Url.Action("Edit")',
+                type: 'POST',
+                chache: false,
+                data: { 'termbaseId': termbaseId, 'conceptId': conceptId }
+            });
+        }
+        function removeTerm(id) {
+            console.log(id);
+        }
+    </script>
+}

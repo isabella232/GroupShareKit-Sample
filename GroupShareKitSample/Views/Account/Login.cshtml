@@ -1,0 +1,51 @@
+﻿@using System.Web.Services.Protocols
+@using System.Web.UI.WebControls
+@model GroupShareKitSample.Models.Account
+
+@{
+    ViewBag.Title = "Login";
+}
+
+
+<div class="modal fade" id="loginModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="">
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <h4>Please add your credentials</h4>
+
+                        <div class="form-group">
+                         @Html.TextBoxFor(u => u.UserName, new { @class = "form-control", placeholder = "User name" })
+                            
+                        </div>
+                        <div class="form-group">
+                            @Html.PasswordFor(u => u.Password, new {@class = "form-control", placeholder = "Password"})
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(u => u.GsLink, new {@class = "form-control", placeholder = "Gropshare link"})
+
+                        </div>
+                        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                        <div class="form-group">
+                            <input type="submit" value="Log in" class="btn btn-default"/>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+            $('#loginModal').modal('show');
+        });
+    </script>
+}
+
+
+
