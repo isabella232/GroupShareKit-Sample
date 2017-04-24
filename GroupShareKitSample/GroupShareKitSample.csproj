@@ -263,6 +263,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="3rd party\Sdl.Community.GroupShareKit.dll" />
+    <Content Include="3rd party\Sdl.Core.Bcm.BcmModel.dll" />
+    <Content Include="3rd party\Sdl.TmService.Sdk.dll" />
     <Content Include="3rd party\sqlite3.dll" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
