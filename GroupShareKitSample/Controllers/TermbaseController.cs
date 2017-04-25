@@ -22,26 +22,34 @@ namespace GroupShareKitSample.Controllers
             _viewModel.Search = new SearchTerm();
             _viewModel.Termbases = termbases;
 
-            var searchResult = (List<Term>) TempData["searchResult"];
-            if (searchResult != null)
-            {
-                _viewModel.SearchResult = searchResult;
-                return View(_viewModel);
-            }
-
             return View(_viewModel);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Search(TermbaseViewModel searchedTerm)
+       // [HttpPost]
+     //  [HttpGet]
+        public async Task<ActionResult> Search(string term,string sourceLanguage, string targetLanguage, string termbaseId)
         {
-            var selectedTb = Request["tbselect"];
-            searchedTerm.Search.TermbaseId = selectedTb;
-            var searchResult = await _termRepository.Search(searchedTerm.Search);
-            TempData["searchResult"] = searchResult.Terms;
-            return RedirectToAction("Index","Termbase");
+
+            var searchedTerm = new SearchTerm
+            {
+                SearchedTerm = term,
+                SourceLanguage = sourceLanguage,
+                TargetLanguage = targetLanguage,
+                TermbaseId = termbaseId
+            };
+            var searchResult = await _termRepository.Search(searchedTerm);
+            var tbVm = new TermbaseViewModel
+            {
+                SearchResult = searchResult.Terms
+            };
+            return PartialView("SearchResult", tbVm);
         }
 
+        public async Task<ActionResult> TermDetails(string termbaseId, string conceptId)
+        {
+            var details = await _termRepository.ConceptDetails(termbaseId, conceptId);
+            return PartialView("TermDetails");
+        }
         [HttpPost]
         public void Edit(string termbaseId,string conceptId)
         {

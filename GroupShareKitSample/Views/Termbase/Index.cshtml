@@ -7,20 +7,18 @@
 </div>
 
 <div class="row">
-    @using (Html.BeginForm("Search", "Termbase", FormMethod.Post))
-    {
         <div class="form-horizontal">
             <div class="form-group">
                 <label class="col-md-2 control-label">Searched term:</label>
-                @Html.TextBoxFor(u => u.Search.SearchedTerm, new {@class = "form-control col-md-10", placeholder = "Term"})
+                <input type="text" placeholder="Term searched" class="form-control col-md-10" id="searchedTerm"/>
             </div>
             <div class="form-group">
                 <label class="col-md-2 control-label">Source language:</label>
-                @Html.TextBoxFor(u => u.Search.SourceLanguage, new {@class = "form-control col-md-10", placeholder = "Source language"})
+                <input type="text" placeholder="Source language" class="form-control col-md-10" id="sourceLang" />
             </div>
             <div class="form-group">
                 <label class="col-md-2 control-label">Target language:</label>
-                @Html.TextBoxFor(u => u.Search.TargetLanguage, new {@class = "form-control col-md-10", placeholder = "Target language"})
+                <input type="text" placeholder="Target language" class="form-control col-md-10" id="targLang" />
             </div>
 
             <div class="form-group">
@@ -33,65 +31,53 @@
                 </select>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary"> Search</button>
+                <button type="button" class="btn btn-primary" onclick="searchTermbase()"> Search</button>
             </div>
         </div>
-    }
 </div>
+<div class="row">
+    <div id="termbaseSearchResults">
 
-@if (Model.SearchResult != null)
-{
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Search results</h4>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Term</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var term in Model.SearchResult)
-                    {
-                        <tr>
-                            <td>
-                                <a onclick="editTerm('@term.TermbaseId', @term.ConceptId)"> @term.TermText</a>
-                               
-                            </td>
 
-                            <td>
-                                <a onclick="editTerm('@term.TermbaseId', @term.ConceptId)">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </a>
-                            </td>
-                        </tr>
-
-                    }
-                </tbody>
-            </table>
-
-         
-            @*<div id="test">
-                @{ Html.RenderAction("Search");}
-            </div>*@
-           
-        </div>
-       
     </div>
-}
+    <div id="termDetails">
+        
+    </div>
+</div>
+    
+
 @section scripts{
     <script type="text/javascript">
-        function editTerm(termbaseId,conceptId) {
+        function searchTermbase() {
+            var term = $('#searchedTerm').val();
+            var sourceLang = $('#sourceLang').val();
+            var targLang = $('#targLang').val();
+            var termbaseSelect = document.getElementById('tbselect');
+            var termbaseId = termbaseSelect[termbaseSelect.selectedIndex].value;
+
             $.ajax({
-                url: '@Url.Action("Edit")',
-                type: 'POST',
-                chache: false,
-                data: { 'termbaseId': termbaseId, 'conceptId': conceptId }
+                url: '@Url.Action("Search")',
+                cache: false,
+                data: { 'term': term, 'sourceLanguage': sourceLang, 'targetLanguage': targLang, 'termbaseId': termbaseId },
+                success: function (response) {
+                    $('#termbaseSearchResults').html(response);
+                }
             });
         }
-        function removeTerm(id) {
-            console.log(id);
+        function termDetails(termbaseId,conceptId) {
+            $.ajax({
+                url: '@Url.Action("TermDetails")',
+                //type: 'POST',
+                chache: false,
+                data: { 'termbaseId': termbaseId, 'conceptId': conceptId },
+                success:function(response) {
+                    $('#termDetails').html(response);
+                }
+            });
         }
+        function removeTerm(termbaseId,conceptId) {
+           // console.log(id);
+        }
+
     </script>
 }

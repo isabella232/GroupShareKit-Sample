@@ -7,9 +7,7 @@
 
 <div class="row">
     <div id="projectsAction">
-        <button type="submit" id="submit-all" class="btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add project settings</button>
-        @*<button type="reset" onclick="refreshList()" class="btn btn-primary "><i class="fa fa-refresh" aria-hidden="true"></i> Refresh project list</button>*@
-        @*@Html.ActionLink("Refresh", "Index", "Home", new { @class = "btn btn-primary" })*@
+        <button type="submit" id="submit-all" class="btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create project</button>
         <a href="@Url.Action("Index", "Home")" class="btn btn-warning">
 
             <i class="fa fa-refresh" aria-hidden="true"></i>
@@ -32,9 +30,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Please fill project settings</h4>
-                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>*@
             </div>
             <div class="modal-body">
                 <div class="">
@@ -75,13 +70,11 @@
                                 <div class="col-sm-8">
                                    <input id ="dueDate" type="text" class="form-control datepicker" placeholder="Due date"/>
                                 </div>
-                                @*@Html.LabelFor(model => model.DueDate,new {@class= "col-sm-4 control-label" })
-                                @Html.TextBoxFor(model=>model.DueDate,new {@class= "col-sm-8 form-control datepicker",placeholder="Due date"})*@
                             </div>
 
                             <div class="modal-footer" style="border-top: none">
                                 
-                                    <button type="submit" class="btn btn-primary" onclick="createProject()">Create project</button>
+                                    <button type="submit" class="btn btn-primary" onclick="createProject()">Finish</button>
                                
                             </div>
                         </div>

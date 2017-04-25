@@ -295,6 +295,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="Properties\PublishProfiles\GroupShare.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -342,6 +343,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Termbase\Index.cshtml" />
     <Content Include="Views\Shared\SearchResult.cshtml" />
+    <Content Include="Views\Shared\TermDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

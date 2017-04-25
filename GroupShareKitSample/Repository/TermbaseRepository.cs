@@ -50,5 +50,13 @@ namespace GroupShareKitSample.Repository
             var term = await gsClient.TermBase.SearchTerm(request);
             return term;
         }
+
+        public async Task<ConceptDetails> ConceptDetails(string termbaseId, string conceptId)
+        {
+            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var concept = await gsClient.TermBase.GetConcept(termbaseId, conceptId);
+
+            return concept;
+        } 
     }
 }

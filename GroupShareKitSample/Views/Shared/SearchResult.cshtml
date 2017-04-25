@@ -1,6 +1,6 @@
 ﻿@model GroupShareKitSample.Models.TermbaseViewModel
 
-
+<div class="col-md-6">
     <h4>Search results</h4>
     <table class="table table-striped">
         <thead>
@@ -14,12 +14,12 @@
             {
                 <tr>
                     <td>
-                        <a onclick="editTerm('@term.TermbaseId', @term.ConceptId)"> @term.TermText</a>
+                        <a onclick="termDetails('@term.TermbaseId', @term.ConceptId)"> @term.TermText</a>
 
                     </td>
 
                     <td>
-                        <a onclick="editTerm('@term.TermbaseId', @term.ConceptId)">
+                        <a onclick="removeTerm('@term.TermbaseId', @term.ConceptId)">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </a>
                     </td>
@@ -28,3 +28,4 @@
             }
         </tbody>
     </table>
+</div>
