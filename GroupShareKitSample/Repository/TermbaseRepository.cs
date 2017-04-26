@@ -61,6 +61,19 @@ namespace GroupShareKitSample.Repository
             var json = JsonConvert.SerializeObject(gsConcept.Concept);
             var kitConcept = JsonConvert.DeserializeObject<KitConcept>(json);
             return kitConcept;
-        } 
+        }
+
+        public async Task<ConceptDetails> GetConcept(string termbaseId, string conceptId)
+        {
+            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsConcept = await gsClient.TermBase.GetConcept(termbaseId, conceptId);
+            return gsConcept;
+        }
+
+        public async Task UpdateConcept(string termbaseId, ConceptDetails concept)
+        {
+            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            await gsClient.TermBase.EditConcept(termbaseId, concept);
+        }
     }
 }

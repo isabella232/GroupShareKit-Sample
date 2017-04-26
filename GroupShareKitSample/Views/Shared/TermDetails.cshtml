@@ -5,7 +5,16 @@
    {
        foreach (var term in language.Terms)
        {
-           <p> <strong>Language:</strong> @language.Language.Name <a ><i class="fa fa-plus" aria-hidden="true"> Add term</i></a></p>
+           <p> <strong>Language:</strong> @language.Language.Name <a onclick="showAddArea('@language.Language.Name')" class="pointer"><i class="fa fa-plus" aria-hidden="true"> Add term</i></a>
+           </p>
+           <div id="@language.Language.Name" class="hideAdd row">
+               <div class="col-md-4"><input type="text" placeholder="New term" id='@language.Language.Code' class="form-control" /></div>
+
+               <div class="col-md-2"><a onclick="addTerm('@language.Language.Name', '@Model.Id','@language.Language.Code')" class="addTermBtn"><i class="fa fa-check" aria-hidden="true"></i></a>
+                   <a onclick="hideAddAria('@language.Language.Name')" class="removeTermBtn"><i class="fa fa-times margin" aria-hidden="true"></i></a>
+               </div>
+               
+           </div>
         <p><strong>Term: </strong>@term.Text</p>
            if (term.Attributes != null)
            {

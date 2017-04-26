@@ -9,5 +9,6 @@ namespace GroupShareKitSample.Models
     {
         public List<Attributes> Attributes { get; set; }
         public string Text { get; set; }
+        public List<Transactions> Transactions { get; set; }
     }
 }

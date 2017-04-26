@@ -32,3 +32,22 @@ textarea {
 .datepicker {
     z-index: 10000;
 }
+.hideAdd {
+    display: none;
+
+}
+.margin {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.addTermBtn :hover {
+    color: green;
+    cursor:pointer ;
+}
+.removeTermBtn :hover {
+    color: red;
+    cursor:pointer;
+}
+.pointer:hover {
+    cursor:pointer;
+}

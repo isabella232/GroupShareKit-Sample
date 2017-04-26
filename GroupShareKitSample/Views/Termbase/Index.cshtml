@@ -84,6 +84,25 @@
         }
         function removeTerm(termbaseId,conceptId) {
         }
+        function showAddArea(areaId) {
+            document.getElementById(areaId).style.display = 'initial';
+        }
+        function hideAddAria(areaId) {
+            document.getElementById(areaId).style.display = 'none';
+        }
+        function addTerm(languageId, conceptId,fieldId) {
+            var termbaseSelect = document.getElementById('tbselect');
+            var termbaseId = termbaseSelect[termbaseSelect.selectedIndex].value;
+            var newTerm = document.getElementById(fieldId).value;
 
+            $.ajax({
+                url: '@Url.Action("AddTerm")',
+                chache: false,
+                data: { 'termbaseId': termbaseId, 'conceptId': conceptId, 'newTerm': newTerm, 'languageCode': languageId },
+                success: function(response) {
+                    $('#termDetails').html(response);
+                }
+            });
+        }
     </script>
 }

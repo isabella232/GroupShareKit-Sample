@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Description;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -48,6 +49,39 @@ namespace GroupShareKitSample.Controllers
         {
             var details = await _termRepository.ConceptDetails(termbaseId, conceptId);
             return PartialView("TermDetails",details);
+        }
+
+        public async Task<ActionResult> AddTerm(string termbaseId,string conceptId,string newTerm,string languageCode)
+        {
+            var concept = await _termRepository.GetConcept(termbaseId, conceptId);
+
+            var term = new Sdl.Community.GroupShareKit.Models.Response.TermbaseTerms
+            {
+                Attributes = null,
+
+                Transactions = new List<Sdl.Community.GroupShareKit.Models.Response.Transactions>
+                {
+                    new Sdl.Community.GroupShareKit.Models.Response.Transactions
+                    {
+                        DateTime = DateTime.Now,
+                        Id = null,
+                        Username = "",
+                        Details = new Sdl.Community.GroupShareKit.Models.Response.TransactionsDetails
+                        {
+                            User = "",
+                            Type = "Create"
+                        }
+
+                    }
+                },
+                Text = newTerm
+            };
+            concept.Concept.Languages.First(l => l.Language.Name == languageCode).Terms.Add(term);
+           
+            await _termRepository.UpdateConcept(termbaseId,concept);
+            var details = await _termRepository.ConceptDetails(termbaseId, conceptId);
+
+            return PartialView("TermDetails", details);
         }
         [HttpPost]
         public void Edit(string termbaseId,string conceptId)

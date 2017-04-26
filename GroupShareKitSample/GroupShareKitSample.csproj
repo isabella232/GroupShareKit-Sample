@@ -147,6 +147,7 @@
       <HintPath>..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -262,6 +263,8 @@
     <Compile Include="Models\TermbaseLanguages.cs" />
     <Compile Include="Models\TermbaseTerms.cs" />
     <Compile Include="Models\TermbaseViewModel.cs" />
+    <Compile Include="Models\Transactions.cs" />
+    <Compile Include="Models\TransactionsDetails.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserManagerKit.cs" />
     <Compile Include="Models\UserStore.cs" />
