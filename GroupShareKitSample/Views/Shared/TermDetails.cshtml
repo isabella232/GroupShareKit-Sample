@@ -1,24 +1,25 @@
 ﻿@model GroupShareKitSample.Models.KitConcept
 <div class="col-md-6">
-    <h4> Details</h4>
+    <h4> Term details</h4>
    @foreach (var language in Model.Languages)
    {
        foreach (var term in language.Terms)
        {
-           <p>Language: @language.Language.Name</p>
-           <p>Term: @term.Text</p>
+           <p> <strong>Language:</strong> @language.Language.Name <a ><i class="fa fa-plus" aria-hidden="true"> Add term</i></a></p>
+        <p><strong>Term: </strong>@term.Text</p>
            if (term.Attributes != null)
            {
                foreach (var attribute in term.Attributes)
                {
+                <p>
+                    <strong>@attribute.Name:</strong>
+                    @foreach (var val in attribute.Value)
+                    {
+                        @val.Value
 
-                   <p>@attribute.Name:</p>
-                   foreach (var val in attribute.Value)
-                   {
-                       <p>@val.Value</p>
-  
-                   }
-  
+                    }
+                   </p>
+ 
                }
            }
        }

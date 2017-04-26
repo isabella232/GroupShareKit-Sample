@@ -10,6 +10,7 @@ namespace GroupShareKitSample.Models
     {
         public List<Attributes> Attributes { get; set; }
         public List<TermbaseLanguages> Languages { get; set; }
+        public string Id { get; set; }
     
     }
 
