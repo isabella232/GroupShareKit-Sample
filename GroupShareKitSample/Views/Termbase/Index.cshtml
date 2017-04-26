@@ -1,5 +1,4 @@
 ﻿@using System.Web.Mvc.Html
-@using Sdl.Community.GroupShareKit.Models.Response
 @model GroupShareKitSample.Models.TermbaseViewModel
 
 <div class="row">
@@ -7,23 +6,24 @@
 </div>
 
 <div class="row">
+    <form id="searchForm">
         <div class="form-horizontal">
             <div class="form-group">
                 <label class="col-md-2 control-label">Searched term:</label>
-                <input type="text" placeholder="Term searched" class="form-control col-md-10" id="searchedTerm"/>
+                <input type="text" placeholder="Term searched" class="form-control col-md-10" id="searchedTerm" required />
             </div>
             <div class="form-group">
                 <label class="col-md-2 control-label">Source language:</label>
-                <input type="text" placeholder="Source language" class="form-control col-md-10" id="sourceLang" />
+                <input type="text" placeholder="Source language" class="form-control col-md-10" id="sourceLang" required />
             </div>
             <div class="form-group">
                 <label class="col-md-2 control-label">Target language:</label>
-                <input type="text" placeholder="Target language" class="form-control col-md-10" id="targLang" />
+                <input type="text" placeholder="Target language" class="form-control col-md-10" id="targLang" required />
             </div>
 
             <div class="form-group">
                 <label for="tbselect" class="col-md-2 control-label">Termbase:</label>
-                <select class="form-control" name="tbselect"id="tbselect">
+                <select class="form-control" name="tbselect" id="tbselect">
                     @foreach (var termbase in Model.Termbases)
                     {
                         <option value="@termbase.Id">@termbase.Name</option>
@@ -31,9 +31,10 @@
                 </select>
             </div>
             <div class="form-group">
-                <button type="button" class="btn btn-primary" onclick="searchTermbase()"> Search</button>
+                <button type="submit" class="btn btn-primary" onclick="searchTermbase()"> Search</button>
             </div>
         </div>
+    </form>
 </div>
 <div class="row">
     <div id="termbaseSearchResults">
@@ -48,6 +49,9 @@
 
 @section scripts{
     <script type="text/javascript">
+        document.getElementById('searchForm').onsubmit = function (e) {
+            e.preventDefault();
+        }
         function searchTermbase() {
             var term = $('#searchedTerm').val();
             var sourceLang = $('#sourceLang').val();
@@ -67,7 +71,6 @@
         function termDetails(termbaseId,conceptId) {
             $.ajax({
                 url: '@Url.Action("TermDetails")',
-                //type: 'POST',
                 chache: false,
                 data: { 'termbaseId': termbaseId, 'conceptId': conceptId },
                 success:function(response) {
@@ -76,7 +79,6 @@
             });
         }
         function removeTerm(termbaseId,conceptId) {
-           // console.log(id);
         }
 
     </script>

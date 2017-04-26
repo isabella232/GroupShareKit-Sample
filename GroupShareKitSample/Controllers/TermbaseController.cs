@@ -25,8 +25,7 @@ namespace GroupShareKitSample.Controllers
             return View(_viewModel);
         }
 
-       // [HttpPost]
-     //  [HttpGet]
+
         public async Task<ActionResult> Search(string term,string sourceLanguage, string targetLanguage, string termbaseId)
         {
 

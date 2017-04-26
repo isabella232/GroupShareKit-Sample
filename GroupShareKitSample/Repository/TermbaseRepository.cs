@@ -58,17 +58,7 @@ namespace GroupShareKitSample.Repository
             var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
             var gsConcept = await gsClient.TermBase.GetConcept(termbaseId, conceptId);
 
-            //var kitConcept = new KitConcept();
-            //var attributes = new List<KitAttributes>();
-            //var terms = new List<KitTermbaseLanguages>();
-            //foreach (var language in gsConcept.Concept.Languages)
-            //{
-            //    foreach (var gsTerm in language.Terms)
-            //    {
-                    
-            //    }
-            //}
-            var json = JsonConvert.SerializeObject(gsConcept.Concept);//new JavaScriptSerializer().Serialize(gsConcept.Concept);
+            var json = JsonConvert.SerializeObject(gsConcept.Concept);
             var kitConcept = JsonConvert.DeserializeObject<KitConcept>(json);
             return kitConcept;
         } 

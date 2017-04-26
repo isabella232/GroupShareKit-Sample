@@ -53,7 +53,6 @@ namespace GroupShareKitSample.Controllers
 
                     var gsClient = await _userManager.GetGroupShareClient(account);
 
-                    // var user =await _userManager.FindAsync(account.UserName, account.Password);
                     var user = await userStore.FindAsync(account.UserName, account.Password,gsClient);
                     ModelState.Clear();
                    
