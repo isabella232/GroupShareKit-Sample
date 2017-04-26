@@ -48,7 +48,7 @@ namespace GroupShareKitSample.Controllers
         public async Task<ActionResult> TermDetails(string termbaseId, string conceptId)
         {
             var details = await _termRepository.ConceptDetails(termbaseId, conceptId);
-            return PartialView("TermDetails");
+            return PartialView("TermDetails",details);
         }
         [HttpPost]
         public void Edit(string termbaseId,string conceptId)

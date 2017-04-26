@@ -28,7 +28,8 @@ namespace GroupShareKitSample.Helper
             if (token != string.Empty)
             {
                 var userId = user.Identity.GetUserId();
-                var authenticatedUser = await BlobCache.Secure.GetObject<User>(userId);
+               
+                var authenticatedUser = await BlobCache.InMemory.GetObject<User>(userId);
 
                 var credentials = new Credentials(token, authenticatedUser.UserName, authenticatedUser.Password);
                 var inMemoryCredentials = new InMemoryCredentialStore(credentials);

@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
+    <IncludeIisSettings>false</IncludeIisSettings>
+    <DeployEncryptKey>Encryption password is used only if any deployment setting is marked as secure</DeployEncryptKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -247,12 +250,17 @@
     </Compile>
     <Compile Include="Helper\HelperMethods.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Attributes.cs" />
+    <Compile Include="Models\KitConcept.cs" />
+    <Compile Include="Models\Language.cs" />
     <Compile Include="Models\Organization.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\ProjectViewModel.cs" />
     <Compile Include="Models\SearchTerm.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Models\Termbase.cs" />
+    <Compile Include="Models\TermbaseLanguages.cs" />
+    <Compile Include="Models\TermbaseTerms.cs" />
     <Compile Include="Models\TermbaseViewModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserManagerKit.cs" />
@@ -296,6 +304,8 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Properties\PublishProfiles\GroupShare.pubxml" />
+    <None Include="Properties\PublishProfiles\GroupShareKitSampleWeb - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\GroupShareKitSampleWeb - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -353,6 +363,9 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

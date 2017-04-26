@@ -4,7 +4,9 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Script.Serialization;
 using GroupShareKitSample.Models;
+using Newtonsoft.Json;
 using Sdl.Community.GroupShareKit.Clients;
 using Sdl.Community.GroupShareKit.Models.Response;
 using Termbase = GroupShareKitSample.Models.Termbase;
@@ -51,12 +53,24 @@ namespace GroupShareKitSample.Repository
             return term;
         }
 
-        public async Task<ConceptDetails> ConceptDetails(string termbaseId, string conceptId)
+        public async Task<KitConcept> ConceptDetails(string termbaseId, string conceptId)
         {
             var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
-            var concept = await gsClient.TermBase.GetConcept(termbaseId, conceptId);
+            var gsConcept = await gsClient.TermBase.GetConcept(termbaseId, conceptId);
 
-            return concept;
+            //var kitConcept = new KitConcept();
+            //var attributes = new List<KitAttributes>();
+            //var terms = new List<KitTermbaseLanguages>();
+            //foreach (var language in gsConcept.Concept.Languages)
+            //{
+            //    foreach (var gsTerm in language.Terms)
+            //    {
+                    
+            //    }
+            //}
+            var json = JsonConvert.SerializeObject(gsConcept.Concept);//new JavaScriptSerializer().Serialize(gsConcept.Concept);
+            var kitConcept = JsonConvert.DeserializeObject<KitConcept>(json);
+            return kitConcept;
         } 
     }
 }

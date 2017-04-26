@@ -84,7 +84,7 @@ namespace GroupShareKitSample.Models
             };
             //_authenticatedUser = user;
            // 
-            await BlobCache.Secure.InsertObject(user.Id, user);
+            await BlobCache.InMemory.InsertObject(user.Id, user);
             return user;
 
         }
