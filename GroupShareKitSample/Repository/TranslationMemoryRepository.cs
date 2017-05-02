@@ -39,11 +39,11 @@ namespace GroupShareKitSample.Repository
             return kitTm;
         }
 
-        public async Task<List<Filter>> FilterAsPlainText(string searchedUnit,string tmId, string sourceCode, string targetCode)
+        public async Task<List<Filter>> FilterAsPlainText(string sourceSearchedUnit,string targetSearchedUnit, string tmId, string sourceCode, string targetCode)
         {
             var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
             
-            var languageDetails = new LanguageDetailsRequest("", sourceCode, searchedUnit, targetCode);
+            var languageDetails = new LanguageDetailsRequest(sourceSearchedUnit, sourceCode, targetSearchedUnit, targetCode);
             var tmDetails = new TranslationMemoryDetailsRequest(new Guid(tmId), 0, 50);
             var gsUnits = await gsClient.TranslationMemories.FilterAsPlainText(languageDetails, tmDetails, true, true);
             var searchResults = new List<Filter>();

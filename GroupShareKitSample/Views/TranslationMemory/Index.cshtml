@@ -15,8 +15,12 @@
                     <input type="text" placeholder="language code" class="form-control col-md-10" id="targetCode" required/>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label">Term:</label>
-                    <input type="text" placeholder="Searched term" class="form-control col-md-10" id="searchedUnit" required/>
+                    <label class="col-md-2 control-label">Source term:</label>
+                    <input type="text" placeholder="Searched term" class="form-control col-md-10" id="sourceSearchedUnit" />
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Target term:</label>
+                    <input type="text" placeholder="Searched term" class="form-control col-md-10" id="targetSearchedUnit"  />
                 </div>
                 <div class="form-group">
                     <label for="tmSelect" class="col-md-2 control-label">TranslationMemory:</label>
@@ -50,11 +54,12 @@
             var targetCode = $('#targetCode').val();
             var tmSelect = document.getElementById('tmSelect');
             var tmId = tmSelect[tmSelect.selectedIndex].value;
-            var searchedUnit = $('#searchedUnit').val();
+            var sourceSearchedUnit = $('#sourceSearchedUnit').val();
+            var targetSearchedUnit = $('#targetSearchedUnit').val();
             $.ajax({
                 url: '@Url.Action("SearchTerm")',
                 cache: false,
-                data: { 'searchedUnit':searchedUnit,'tmId': tmId, 'sourceCode': sourceCode, 'targetCode': targetCode },
+                data: { 'sourceSearchedUnit': sourceSearchedUnit, 'targetSearchedUnit': targetSearchedUnit, 'tmId': tmId, 'sourceCode': sourceCode, 'targetCode': targetCode },
                 success:function(response) {
                     $('#tmSearch').html(response);
                 }

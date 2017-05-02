@@ -22,9 +22,10 @@ namespace GroupShareKitSample.Controllers
             return View(_tmVm);
         }
 
-        public async Task<ActionResult> SearchTerm(string searchedUnit, string tmId, string sourceCode, string targetCode)
+        public async Task<ActionResult> SearchTerm(string sourceSearchedUnit,string targetSearchedUnit, 
+            string tmId, string sourceCode, string targetCode)
         {
-            var terms = await _tmRepository.FilterAsPlainText(searchedUnit, tmId,sourceCode,targetCode);
+            var terms = await _tmRepository.FilterAsPlainText(sourceSearchedUnit,targetSearchedUnit, tmId,sourceCode,targetCode);
             _tmVm.SearchResult = terms;
             return PartialView("TmSearchResult",_tmVm);
         }
