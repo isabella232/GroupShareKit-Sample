@@ -246,12 +246,14 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TermbaseController.cs" />
+    <Compile Include="Controllers\TranslationMemoryController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\HelperMethods.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Attributes.cs" />
+    <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\KitConcept.cs" />
     <Compile Include="Models\Language.cs" />
     <Compile Include="Models\Organization.cs" />
@@ -265,12 +267,15 @@
     <Compile Include="Models\TermbaseViewModel.cs" />
     <Compile Include="Models\Transactions.cs" />
     <Compile Include="Models\TransactionsDetails.cs" />
+    <Compile Include="Models\TranslationMemory.cs" />
+    <Compile Include="Models\TranslationMemoryViewModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserManagerKit.cs" />
     <Compile Include="Models\UserStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ProjectsRepository.cs" />
     <Compile Include="Repository\TermbaseRepository.cs" />
+    <Compile Include="Repository\TranslationMemoryRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -357,6 +362,8 @@
     <Content Include="Views\Termbase\Index.cshtml" />
     <Content Include="Views\Shared\SearchResult.cshtml" />
     <Content Include="Views\Shared\TermDetails.cshtml" />
+    <Content Include="Views\TranslationMemory\Index.cshtml" />
+    <Content Include="Views\Shared\TmSearchResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

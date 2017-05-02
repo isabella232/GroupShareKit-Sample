@@ -1,0 +1,64 @@
+﻿@model GroupShareKitSample.Models.TranslationMemoryViewModel
+<div class="row">
+    <h4>Search translation unit as plain text</h4>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <form id="searchTmForm">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Source language code:</label>
+                    <input type="text" placeholder="Language code" class="form-control col-md-10" id="sourceCode" required/>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Target language code :</label>
+                    <input type="text" placeholder="language code" class="form-control col-md-10" id="targetCode" required/>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Term:</label>
+                    <input type="text" placeholder="Searched term" class="form-control col-md-10" id="searchedUnit" required/>
+                </div>
+                <div class="form-group">
+                    <label for="tmSelect" class="col-md-2 control-label">TranslationMemory:</label>
+                    <select class="form-control" name="tmselect" id="tmSelect">
+                        @foreach (var tm in Model.TranslationMemories)
+                        {
+                            <option value="@tm.Id">@tm.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" onclick="searchTerm()"> <i class="fa fa-search"></i> Search term</button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+<div class="row">
+    <div id="tmSearch"></div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        document.getElementById('searchTmForm').onsubmit = function (e) {
+            e.preventDefault();
+        }
+
+        function searchTerm() {
+            var sourceCode = $('#sourceCode').val();
+            var targetCode = $('#targetCode').val();
+            var tmSelect = document.getElementById('tmSelect');
+            var tmId = tmSelect[tmSelect.selectedIndex].value;
+            var searchedUnit = $('#searchedUnit').val();
+            $.ajax({
+                url: '@Url.Action("SearchTerm")',
+                cache: false,
+                data: { 'searchedUnit':searchedUnit,'tmId': tmId, 'sourceCode': sourceCode, 'targetCode': targetCode },
+                success:function(response) {
+                    $('#tmSearch').html(response);
+                }
+            });
+        }
+    </script>
+}
