@@ -83,10 +83,11 @@ namespace GroupShareKitSample.Controllers
 
             return PartialView("TermDetails", details);
         }
-        [HttpPost]
-        public void Edit(string termbaseId,string conceptId)
+
+        public async Task<ActionResult> DeleteConcept(string termbaseId, string conceptId, string term, string sourceLanguage, string targetLanguage)
         {
-           // return null;
-        } 
+            await _termRepository.DeleteConcept(termbaseId, conceptId);
+            return await Search(term, sourceLanguage, targetLanguage, termbaseId);
+        }
     }
 }

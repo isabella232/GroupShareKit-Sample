@@ -13,7 +13,7 @@
             <div class="form-horizontal">
                 <div class="form-group">
                     <label class="col-md-2 control-label">Searched term:</label>
-                    <input type="text" placeholder="Term searched" class="form-control col-md-10" id="searchedTerm" required />
+                    <input type="text" placeholder="Term searched" class="form-control col-md-10" id="searchedTerm" name="searchedTerm" required />
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label">Source language:</label>
@@ -56,6 +56,8 @@
         document.getElementById('searchForm').onsubmit = function (e) {
             e.preventDefault();
         }
+        
+
         function searchTermbase() {
             var term = $('#searchedTerm').val();
             var sourceLang = $('#sourceLang').val();
@@ -82,7 +84,19 @@
                 }
             });
         }
-        function removeTerm(termbaseId,conceptId) {
+        function removeTerm(termbaseId, conceptId) {
+            var term = $('#searchedTerm').val();
+            var sourceLang = $('#sourceLang').val();
+            var targLang = $('#targLang').val();
+            $.ajax({
+                url: '@Url.Action("DeleteConcept")',
+                chache: false,
+                data: { 'termbaseId': termbaseId, 'conceptId': conceptId, 'term': term, 'sourceLanguage': sourceLang, 'targetLanguage': targLang },
+                success: function(response) {
+                    $('#termbaseSearchResults').html(response);
+                }
+
+            });
         }
         function showAddArea(areaId) {
             document.getElementById(areaId).style.display = 'initial';

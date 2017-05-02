@@ -75,5 +75,11 @@ namespace GroupShareKitSample.Repository
             var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
             await gsClient.TermBase.EditConcept(termbaseId, concept);
         }
+
+        public async Task DeleteConcept(string termbaseId, string conceptId)
+        {
+            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            await gsClient.TermBase.DeleteConcept(termbaseId, conceptId);
+        }
     }
 }
