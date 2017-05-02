@@ -42,6 +42,7 @@
 </div>
 <div class="row">
     <div id="tmSearch"></div>
+    <div id="loading" class="hideAdd"> <img src="~/Content/Images/ripple.svg"/></div>
 </div>
 @section scripts{
     <script type="text/javascript">
@@ -50,6 +51,8 @@
         }
 
         function searchTerm() {
+            $('#tmSearch').empty();
+            document.getElementById('loading').style.display = 'initial';
             var sourceCode = $('#sourceCode').val();
             var targetCode = $('#targetCode').val();
             var tmSelect = document.getElementById('tmSelect');
@@ -60,7 +63,8 @@
                 url: '@Url.Action("SearchTerm")',
                 cache: false,
                 data: { 'sourceSearchedUnit': sourceSearchedUnit, 'targetSearchedUnit': targetSearchedUnit, 'tmId': tmId, 'sourceCode': sourceCode, 'targetCode': targetCode },
-                success:function(response) {
+                success: function (response) {
+                    document.getElementById('loading').style.display = 'none';
                     $('#tmSearch').html(response);
                 }
             });
