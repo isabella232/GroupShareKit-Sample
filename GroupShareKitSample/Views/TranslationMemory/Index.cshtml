@@ -1,29 +1,29 @@
 ﻿@model GroupShareKitSample.Models.TranslationMemoryViewModel
 <div class="row">
-    <h4>Search translation unit as plain text</h4>
+    <h4 class="textAlign">Search translation unit as plain text</h4>
 </div>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 col-sm-12">
         <form id="searchTmForm">
             <div class="form-horizontal">
                 <div class="form-group">
-                    <label class="col-md-2 control-label">Source language code:</label>
-                    <input type="text" placeholder="Language code" class="form-control col-md-10" id="sourceCode" required/>
+                    <label class="col-md-2 col-sm-2 control-label textAlign">Source language code:</label>
+                    <input type="text" placeholder="Language code" class="form-control col-md-10 col-sm-10" id="sourceCode" required/>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label">Target language code :</label>
-                    <input type="text" placeholder="language code" class="form-control col-md-10" id="targetCode" required/>
+                    <label class="col-md-2 col-sm-2 control-label textAlign">Target language code :</label>
+                    <input type="text" placeholder="language code" class="form-control col-md-10 col-sm-10" id="targetCode" required/>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label">Source term:</label>
-                    <input type="text" placeholder="Searched term" class="form-control col-md-10" id="sourceSearchedUnit" />
+                    <label class="col-md-2 col-sm-2 control-label textAlign">Source term:</label>
+                    <input type="text" placeholder="Searched term" class="form-control col-md-10 col-sm-10" id="sourceSearchedUnit" />
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label">Target term:</label>
-                    <input type="text" placeholder="Searched term" class="form-control col-md-10" id="targetSearchedUnit"  />
+                    <label class="col-md-2 col-sm-2 control-label textAlign">Target term:</label>
+                    <input type="text" placeholder="Searched term" class="form-control col-md-10 col-sm-10" id="targetSearchedUnit"  />
                 </div>
                 <div class="form-group">
-                    <label for="tmSelect" class="col-md-2 control-label">TranslationMemory:</label>
+                    <label for="tmSelect" class="col-md-2 col-sm-2 control-label textAlign">TranslationMemory:</label>
                     <select class="form-control" name="tmselect" id="tmSelect">
                         @foreach (var tm in Model.TranslationMemories)
                         {

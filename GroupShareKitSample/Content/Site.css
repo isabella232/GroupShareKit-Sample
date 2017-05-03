@@ -51,3 +51,36 @@ textarea {
 .pointer:hover {
     cursor:pointer;
 }
+.margin {
+    margin-bottom: 1%;
+}
+#logo {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 5%;
+   
+}
+#gsLink {
+    margin-bottom: 4%;
+}
+#loginModalContent {
+    width: 80%;
+}
+#logoImg {
+    width: 70px;
+}
+.fontSize {
+    font-size: 12px;
+}
+#searchForm {
+    margin-left: 15px;
+}
+#searchTmForm {
+     margin-left: 15px;
+}
+.textAlign {
+    text-align: left!important;
+}
+a {
+    cursor: pointer !important;
+}
