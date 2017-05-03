@@ -10,5 +10,6 @@ namespace GroupShareKitSample.Models
     {
         public List<TranslationMemory> TranslationMemories { get; set; }
         public List<Filter> SearchResult { get; set; }
+        public List<LanguageDirection> LanguageDirections { get; set; }
     }
 }

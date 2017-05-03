@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Sdl.Community.GroupShareKit.Models.Response;
 using Sdl.Community.GroupShareKit.Models.Response.TranslationMemory;
 using Filter = GroupShareKitSample.Models.Filter;
+using LanguageDirection = GroupShareKitSample.Models.LanguageDirection;
 using TranslationMemory = GroupShareKitSample.Models.TranslationMemory;
 
 
@@ -27,15 +29,30 @@ namespace GroupShareKitSample.Repository
             var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
             var gsTranslationMemories = await gsClient.TranslationMemories.GetTms();
             var kitTm = new List<TranslationMemory>();
+            
             foreach (var tm in gsTranslationMemories.Items)
             {
                 var translationMemory = new TranslationMemory
                 {
                     Id = tm.TranslationMemoryId,
-                    Name = tm.Name
+                    Name = tm.Name,
+                    LanguageDirections = new List<LanguageDirection>()
                 };
+                foreach (var languageDirection in tm.LanguageDirections)
+                {
+                    var language = new LanguageDirection
+                    {
+                        SourceCode = languageDirection.Source,
+                        SourceDisplayName = new CultureInfo(languageDirection.Source).DisplayName,
+                        TargetCode = languageDirection.Target,
+                        TargetDisplayName = new CultureInfo(languageDirection.Target).DisplayName
+                    };
+                    translationMemory.LanguageDirections.Add(language);
+                }
+               
                 kitTm.Add(translationMemory);
             }
+         
             return kitTm;
         }
 

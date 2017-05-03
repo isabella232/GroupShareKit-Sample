@@ -10,30 +10,43 @@
         <form id="searchTmForm">
             <div class="form-horizontal">
                 <div class="form-group">
-                    <label class="col-md-2 col-sm-2 control-label textAlign">Source language code:</label>
-                    <input type="text" placeholder="Language code" class="form-control col-md-10 col-sm-10" id="sourceCode" required/>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-2 col-sm-2 control-label textAlign">Target language code :</label>
-                    <input type="text" placeholder="language code" class="form-control col-md-10 col-sm-10" id="targetCode" required/>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-2 col-sm-2 control-label textAlign">Source term:</label>
-                    <input type="text" placeholder="Searched term" class="form-control col-md-10 col-sm-10" id="sourceSearchedUnit" />
-                </div>
-                <div class="form-group">
-                    <label class="col-md-2 col-sm-2 control-label textAlign">Target term:</label>
-                    <input type="text" placeholder="Searched term" class="form-control col-md-10 col-sm-10" id="targetSearchedUnit"  />
-                </div>
-                <div class="form-group">
                     <label for="tmSelect" class="col-md-2 col-sm-2 control-label textAlign">TranslationMemory:</label>
-                    <select class="form-control" name="tmselect" id="tmSelect">
+                    <select class="form-control" name="tmselect" id="tmSelect" onchange="tmSelected()">
                         @foreach (var tm in Model.TranslationMemories)
                         {
                             <option value="@tm.Id">@tm.Name</option>
                         }
                     </select>
                 </div>
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-2 control-label textAlign">Source language code:</label>
+                    @*<input type="text" placeholder="Language code" class="form-control col-md-10 col-sm-10" id="sourceCode" required/>*@
+                    <select class="form-control" name="tmselect" id="sourceSelect">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-2 control-label textAlign">Target language code :</label>
+                    @*<input type="text" placeholder="language code" class="form-control col-md-10 col-sm-10" id="targetCode" required/>*@
+                    <select class="form-control" name="tmselect" id="targetSelect">
+                        @*@foreach (var tm in Model.TranslationMemories)
+                        {
+                            foreach (var language in tm.LanguageDirections)
+                            {
+                                <option value="@language.TargetCode">@language.TargetDisplayName</option>
+                            }
+
+                        }*@
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-2 control-label textAlign">Source term:</label>
+                    <input type="text" placeholder="Searched term" class="form-control col-md-10 col-sm-10" id="sourceSearchedUnit"/>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-2 control-label textAlign">Target term:</label>
+                    <input type="text" placeholder="Searched term" class="form-control col-md-10 col-sm-10" id="targetSearchedUnit"/>
+                </div>
+
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary" onclick="searchTerm()"> <i class="fa fa-search"></i> Search term</button>
 
@@ -49,28 +62,70 @@
 </div>
 @section scripts{
     <script type="text/javascript">
-        document.getElementById('searchTmForm').onsubmit = function (e) {
+        document.getElementById('searchTmForm').onsubmit = function(e) {
             e.preventDefault();
         }
 
         function searchTerm() {
             $('#tmSearch').empty();
             document.getElementById('loading').style.display = 'initial';
-            var sourceCode = $('#sourceCode').val();
-            var targetCode = $('#targetCode').val();
-            var tmSelect = document.getElementById('tmSelect');
-            var tmId = tmSelect[tmSelect.selectedIndex].value;
+            var sourceCode =document.getElementById('sourceSelect').value;
+            var targetCode = document.getElementById('targetSelect').value;
+            var tmId = document.getElementById('tmSelect').value;
             var sourceSearchedUnit = $('#sourceSearchedUnit').val();
             var targetSearchedUnit = $('#targetSearchedUnit').val();
             $.ajax({
                 url: '@Url.Action("SearchTerm")',
                 cache: false,
                 data: { 'sourceSearchedUnit': sourceSearchedUnit, 'targetSearchedUnit': targetSearchedUnit, 'tmId': tmId, 'sourceCode': sourceCode, 'targetCode': targetCode },
-                success: function (response) {
+                success: function(response) {
                     document.getElementById('loading').style.display = 'none';
                     $('#tmSearch').html(response);
                 }
             });
+        }
+
+        function tmSelected() {
+            var tmId = document.getElementById('tmSelect').value;
+            var translationMemoriesList = @Html.Raw(Json.Encode(Model.TranslationMemories));
+            var sourceLanguages = [];
+            var targetLanguages = [];
+            var selectedTm = $.grep(translationMemoriesList, function(element, index) {
+                return element.Id === tmId;
+            });
+            selectedTm[0].LanguageDirections.forEach(function(item) {
+                sourceLanguages.push({
+                    key: item.SourceCode,
+                    label: item.SourceDisplayName
+
+                });
+            });
+            selectedTm[0].LanguageDirections.forEach(function(item) {
+                targetLanguages.push({
+                    key: item.TargetCode,
+                    label: item.TargetDisplayName
+
+                });
+            });
+            $('#sourceSelect').empty();
+            $('#targetSelect').empty();
+        //Create source language select
+            var sourceSelect = document.getElementById('sourceSelect');
+            for(var i = 0; i < sourceLanguages.length; i++) {
+                var opt = document.createElement("option");
+                opt.value = sourceLanguages[i].key;
+                opt.innerHTML = sourceLanguages[i].label;
+                sourceSelect.appendChild(opt);
+            }
+            //create target language select
+            var targetSelect = document.getElementById('targetSelect');
+            for(var t = 0; t < targetLanguages.length; t++) {
+                var option = document.createElement("option");
+                option.value = targetLanguages[t].key;
+                option.innerHTML = targetLanguages[t].label;
+                targetSelect.appendChild(option);
+            }
+           
         }
     </script>
 }
