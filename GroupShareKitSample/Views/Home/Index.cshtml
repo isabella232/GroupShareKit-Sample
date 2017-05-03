@@ -87,28 +87,33 @@
 </div>
 
 <div class="row">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Project name</th>
-                <th> Due date</th>
-                <th>Source language</th>
-                <th>Target language</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Projects)
-            {
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td><i class="fa fa-folder-open" aria-hidden="true"></i>@item.Name</td>
-                    <td>@item.DueDate</td>
-                    <td>@item.SourceLanguage</td>
-                    <td>@item.TargetLanguage</td>
+                    <th >Project name</th>
+                    <th> Due date</th>
+                    <th>Source language</th>
+                    <th>Target language</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Projects)
+            {
+                    <tr>
+                        <td><i class="fa fa-folder-open" aria-hidden="true"></i>@item.Name</td>
+                        <td> @item.DueDate</td>
+                        <td>@item.SourceLanguage</td>
+                        <td>@item.TargetLanguage</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+   
+
+
 @section scripts{
     <script type="text/javascript">
 
