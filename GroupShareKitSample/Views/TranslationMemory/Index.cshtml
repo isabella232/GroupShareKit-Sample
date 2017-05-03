@@ -19,13 +19,13 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 col-sm-2 control-label textAlign">Source language code:</label>
+                    <label class="col-md-2 col-sm-2 control-label textAlign">Source language:</label>
                     @*<input type="text" placeholder="Language code" class="form-control col-md-10 col-sm-10" id="sourceCode" required/>*@
                     <select class="form-control" name="tmselect" id="sourceSelect">
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 col-sm-2 control-label textAlign">Target language code :</label>
+                    <label class="col-md-2 col-sm-2 control-label textAlign">Target language :</label>
                     @*<input type="text" placeholder="language code" class="form-control col-md-10 col-sm-10" id="targetCode" required/>*@
                     <select class="form-control" name="tmselect" id="targetSelect">
                         @*@foreach (var tm in Model.TranslationMemories)
@@ -84,8 +84,8 @@
                 }
             });
         }
-
-        function tmSelected() {
+        $("#tmSelect").val("tmSelect").change();
+       function tmSelected() {
             var tmId = document.getElementById('tmSelect').value;
             var translationMemoriesList = @Html.Raw(Json.Encode(Model.TranslationMemories));
             var sourceLanguages = [];
@@ -93,38 +93,41 @@
             var selectedTm = $.grep(translationMemoriesList, function(element, index) {
                 return element.Id === tmId;
             });
-            selectedTm[0].LanguageDirections.forEach(function(item) {
-                sourceLanguages.push({
-                    key: item.SourceCode,
-                    label: item.SourceDisplayName
+            if (selectedTm.length>0) {
+                selectedTm[0].LanguageDirections.forEach(function(item) {
+                    sourceLanguages.push({
+                        key: item.SourceCode,
+                        label: item.SourceDisplayName
 
+                    });
                 });
-            });
-            selectedTm[0].LanguageDirections.forEach(function(item) {
-                targetLanguages.push({
-                    key: item.TargetCode,
-                    label: item.TargetDisplayName
+                selectedTm[0].LanguageDirections.forEach(function(item) {
+                    targetLanguages.push({
+                        key: item.TargetCode,
+                        label: item.TargetDisplayName
 
+                    });
                 });
-            });
-            $('#sourceSelect').empty();
-            $('#targetSelect').empty();
-        //Create source language select
-            var sourceSelect = document.getElementById('sourceSelect');
-            for(var i = 0; i < sourceLanguages.length; i++) {
-                var opt = document.createElement("option");
-                opt.value = sourceLanguages[i].key;
-                opt.innerHTML = sourceLanguages[i].label;
-                sourceSelect.appendChild(opt);
+                $('#sourceSelect').empty();
+                $('#targetSelect').empty();
+                //Create source language select
+                var sourceSelect = document.getElementById('sourceSelect');
+                for(var i = 0; i < sourceLanguages.length; i++) {
+                    var opt = document.createElement("option");
+                    opt.value = sourceLanguages[i].key;
+                    opt.innerHTML = sourceLanguages[i].label;
+                    sourceSelect.appendChild(opt);
+                }
+                //create target language select
+                var targetSelect = document.getElementById('targetSelect');
+                for(var t = 0; t < targetLanguages.length; t++) {
+                    var option = document.createElement("option");
+                    option.value = targetLanguages[t].key;
+                    option.innerHTML = targetLanguages[t].label;
+                    targetSelect.appendChild(option);
+                }
             }
-            //create target language select
-            var targetSelect = document.getElementById('targetSelect');
-            for(var t = 0; t < targetLanguages.length; t++) {
-                var option = document.createElement("option");
-                option.value = targetLanguages[t].key;
-                option.innerHTML = targetLanguages[t].label;
-                targetSelect.appendChild(option);
-            }
+        
            
         }
     </script>
