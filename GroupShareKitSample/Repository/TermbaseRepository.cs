@@ -65,7 +65,7 @@ namespace GroupShareKitSample.Repository
         public async Task<SearchResponse> Search(SearchTerm search)
         {
             var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
-            var request = new SearchTermRequest(search.TermbaseId, search.Language, search.SearchedTerm,null);
+            var request = new SearchTermRequest(search.TermbaseId, search.Language, search.SearchedTerm);
 
             var term = await gsClient.TermBase.SearchTerm(request);
             return term;

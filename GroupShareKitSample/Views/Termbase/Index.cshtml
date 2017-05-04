@@ -24,7 +24,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-md-2 control-label textAlign">Language:</label>
-                        <select class="form-control" id="languageSelect">
+                        <select class="form-control" id="languageSelect" onchange="languageChanged()">
                         </select>
                     </div>
                     <div class="form-group">
@@ -55,58 +55,71 @@
 
 @section scripts{
     <script type="text/javascript">
-        document.getElementById('searchForm').onsubmit = function (e) {
+        document.getElementById('searchForm').onsubmit = function(e) {
             e.preventDefault();
         }
-        
+
         $("#tbselect").val("tbselect").change();
+
         function searchTermbase() {
             $('#termDetails').empty();
+
             var term = $('#searchedTerm').val();
-            var language =document.getElementById('languageSelect').value;
+            var language = document.getElementById('languageSelect').value;
             var termbaseId = document.getElementById('tbselect').value;
             $.ajax({
                 url: '@Url.Action("Search")',
                 cache: false,
                 data: { 'term': term, 'language': language, 'termbaseId': termbaseId },
-                success: function (response) {
+                success: function(response) {
                     $('#termbaseSearchResults').html(response);
                 }
             });
         }
+
         function termbaseSelect() {
             $('#languageSelect').empty();
+            $('#termbaseSearchResults').empty();
+            $('#termDetails').empty();
             var tbId = document.getElementById('tbselect').value;
             var tbList = @Html.Raw(Json.Encode(Model.Termbases));
             var languages = [];
             var selectedTb = $.grep(tbList, function(element, index) {
                 return element.Id === tbId;
             });
-        if (selectedTb.length > 0) {
-            selectedTb[0].LanguageDirections.forEach(function(item) {
-                languages.push({ value: item.SourceDisplayName });
-            });
-        }
-       
-        var languageSelect = document.getElementById('languageSelect');
-        for (var i=0; i < languages.length; i++) {
-            var opt = document.createElement("option");
-            opt.value = languages[i].value;
-            opt.innerHTML = languages[i].value;
-            languageSelect.appendChild(opt);
-        }
+            if (selectedTb.length > 0) {
+                selectedTb[0].LanguageDirections.forEach(function(item) {
+                    languages.push({ value: item.SourceDisplayName });
+                });
+            }
+
+
+            var languageSelect = document.getElementById('languageSelect');
+            for (var i = 0; i < languages.length; i++) {
+                var opt = document.createElement("option");
+                opt.value = languages[i].value;
+                opt.innerHTML = languages[i].value;
+                languageSelect.appendChild(opt);
+            }
 
         }
-        function termDetails(termbaseId,conceptId) {
+
+        function languageChanged() {
+            $('#termbaseSearchResults').empty();
+            $('#termDetails').empty();
+        }
+
+        function termDetails(termbaseId, conceptId) {
             $.ajax({
                 url: '@Url.Action("TermDetails")',
                 chache: false,
                 data: { 'termbaseId': termbaseId, 'conceptId': conceptId },
-                success:function(response) {
+                success: function(response) {
                     $('#termDetails').html(response);
                 }
             });
         }
+
         function removeTerm(termbaseId, conceptId) {
             var term = $('#searchedTerm').val();
             var sourceLang = $('#sourceLang').val();
@@ -121,13 +134,16 @@
 
             });
         }
+
         function showAddArea(areaId) {
             document.getElementById(areaId).style.display = 'initial';
         }
+
         function hideAddAria(areaId) {
             document.getElementById(areaId).style.display = 'none';
         }
-        function addTerm(languageId, conceptId,fieldId) {
+
+        function addTerm(languageId, conceptId, fieldId) {
             var termbaseSelect = document.getElementById('tbselect');
             var termbaseId = termbaseSelect[termbaseSelect.selectedIndex].value;
             var newTerm = document.getElementById(fieldId).value;

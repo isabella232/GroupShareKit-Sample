@@ -1,15 +1,18 @@
 ﻿@model GroupShareKitSample.Models.TermbaseViewModel
 
 <div class="col-md-6">
-    <h4>Search results</h4>
-    <table class="table table-striped">
-        <thead>
+    @if (Model.SearchResult.Count > 0)
+    {
+        <h4>Search results</h4>
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <th>Term</th>
                 <th>Delete</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
+
             @foreach (var term in Model.SearchResult)
             {
                 <tr>
@@ -26,6 +29,12 @@
                 </tr>
 
             }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    }
+    else
+    {
+       <p>No results found</p>
+    }
+
 </div>
