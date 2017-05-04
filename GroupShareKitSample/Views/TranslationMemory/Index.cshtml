@@ -11,7 +11,7 @@
             <div class="form-horizontal">
                 <div class="form-group">
                     <label for="tmSelect" class="col-md-2 col-sm-2 control-label textAlign">TranslationMemory:</label>
-                    <select class="form-control" name="tmselect" id="tmSelect" onchange="tmSelected()">
+                    <select class="form-control" name="tmselect" id="tmSelect" onchange="tmSelected()" required>
                         @foreach (var tm in Model.TranslationMemories)
                         {
                             <option value="@tm.Id">@tm.Name</option>
@@ -20,22 +20,13 @@
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 col-sm-2 control-label textAlign">Source language:</label>
-                    @*<input type="text" placeholder="Language code" class="form-control col-md-10 col-sm-10" id="sourceCode" required/>*@
-                    <select class="form-control" name="tmselect" id="sourceSelect">
+                    <select class="form-control" name="tmselect" id="sourceSelect"required>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 col-sm-2 control-label textAlign">Target language :</label>
-                    @*<input type="text" placeholder="language code" class="form-control col-md-10 col-sm-10" id="targetCode" required/>*@
-                    <select class="form-control" name="tmselect" id="targetSelect">
-                        @*@foreach (var tm in Model.TranslationMemories)
-                        {
-                            foreach (var language in tm.LanguageDirections)
-                            {
-                                <option value="@language.TargetCode">@language.TargetDisplayName</option>
-                            }
+                    <select class="form-control" name="tmselect" id="targetSelect" required>
 
-                        }*@
                     </select>
                 </div>
                 <div class="form-group">
