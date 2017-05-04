@@ -36,18 +36,36 @@ namespace GroupShareKitSample.Repository
                 var termbase = new Termbase
                 {
                     Id = gsTermbase.Id,
-                    Name = gsTermbase.Name
+                    Name = gsTermbase.Name,
+                    LanguageDirections = await GetLanguagesForTb(gsTermbase.Id)
                 };
                 termbases.Add(termbase);
             }
             return termbases;
         }
 
+        public async Task<List<LanguageDirection>> GetLanguagesForTb(string tbId)
+        {
+            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsTermbase = await gsClient.TermBase.GetTermbaseById(tbId);
+            var languageDirection = new List<LanguageDirection>();
+            foreach (var language in gsTermbase.Termbase.Languages)
+            {
+                var lgDirection = new GroupShareKitSample.Models.LanguageDirection
+                {
+                    SourceCode = language.Code,
+                    SourceDisplayName = language.Name
+
+                };
+                languageDirection.Add(lgDirection);
+            }
+            return languageDirection;
+        }
+
         public async Task<SearchResponse> Search(SearchTerm search)
         {
             var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
-            var request = new SearchTermRequest(search.TermbaseId, search.SourceLanguage, search.SearchedTerm,
-                search.TargetLanguage);
+            var request = new SearchTermRequest(search.TermbaseId, search.Language, search.SearchedTerm,null);
 
             var term = await gsClient.TermBase.SearchTerm(request);
             return term;

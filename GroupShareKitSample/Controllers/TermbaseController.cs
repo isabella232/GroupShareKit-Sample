@@ -27,14 +27,13 @@ namespace GroupShareKitSample.Controllers
         }
 
 
-        public async Task<ActionResult> Search(string term,string sourceLanguage, string targetLanguage, string termbaseId)
+        public async Task<ActionResult> Search(string term,string language, string termbaseId)
         {
 
             var searchedTerm = new SearchTerm
             {
                 SearchedTerm = term,
-                SourceLanguage = sourceLanguage,
-                TargetLanguage = targetLanguage,
+                Language = language,
                 TermbaseId = termbaseId
             };
             var searchResult = await _termRepository.Search(searchedTerm);
@@ -87,7 +86,7 @@ namespace GroupShareKitSample.Controllers
         public async Task<ActionResult> DeleteConcept(string termbaseId, string conceptId, string term, string sourceLanguage, string targetLanguage)
         {
             await _termRepository.DeleteConcept(termbaseId, conceptId);
-            return await Search(term, sourceLanguage, targetLanguage, termbaseId);
+            return await Search(term, sourceLanguage, termbaseId);
         }
     }
 }
