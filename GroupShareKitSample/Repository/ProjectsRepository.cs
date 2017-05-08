@@ -60,7 +60,7 @@ namespace GroupShareKitSample.Repository
         public async Task<List<Template>>GetTemplates()
         {
             var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
-            var gsTemplates = await gsClient.ProjectsTemplates.GetAllTemplates();
+            var gsTemplates = await gsClient.Project.GetAllTemplates();
             var templates = new List<Template>();
             foreach (var gsTemplate in gsTemplates)
             {
