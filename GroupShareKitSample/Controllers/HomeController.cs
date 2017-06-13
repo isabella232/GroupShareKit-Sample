@@ -12,13 +12,12 @@ using GroupShareKitSample.Models;
 using GroupShareKitSample.Repository;
 using Microsoft.AspNet.Identity;
 using System.IO.Compression;
-
-
+using GroupShareKitSample.Helper;
 
 namespace GroupShareKitSample.Controllers
 {
 
-    [Authorize]
+    [GSAuthorizeAttribute]
     public class HomeController : Controller
     {
         private static ProjectsRepository _projectsRepository;
@@ -94,9 +93,10 @@ namespace GroupShareKitSample.Controllers
         [HttpPost]
         public async Task CreateProject(string projectName, string templateId, string organizationId,string dueDate)
         {
-            DateTime date= new DateTime();
+            DateTime date = DateTime.Now.AddDays(7);
             try
             {
+
                 date = Convert.ToDateTime(dueDate);
             }catch(Exception e) { }
             

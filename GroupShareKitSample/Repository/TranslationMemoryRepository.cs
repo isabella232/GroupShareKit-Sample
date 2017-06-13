@@ -15,18 +15,16 @@ namespace GroupShareKitSample.Repository
 {
     public class TranslationMemoryRepository
     {
-        private readonly IPrincipal _user;
-        private readonly string _token;
+        private readonly IPrincipal user;
 
         public TranslationMemoryRepository(IPrincipal user)
         {
-            _user = user;
-            _token = Helper.HelperMethods.GetToken(user);
+            this.user = user;
         }
 
         public async Task<List<TranslationMemory>>GetTms()
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var gsTranslationMemories = await gsClient.TranslationMemories.GetTms();
             var kitTm = new List<TranslationMemory>();
             
@@ -58,7 +56,7 @@ namespace GroupShareKitSample.Repository
 
         public async Task<List<Filter>> FilterAsPlainText(string sourceSearchedUnit,string targetSearchedUnit, string tmId, string sourceCode, string targetCode)
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             
             var languageDetails = new LanguageDetailsRequest(sourceSearchedUnit, sourceCode, targetSearchedUnit, targetCode);
             var tmDetails = new TranslationMemoryDetailsRequest(new Guid(tmId), 0, 50);

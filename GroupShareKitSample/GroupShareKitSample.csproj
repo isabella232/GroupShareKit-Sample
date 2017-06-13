@@ -317,7 +317,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\GSAuthorizeAttribute.cs" />
     <Compile Include="Helper\HelperMethods.cs" />
+    <Compile Include="Helper\UserCache.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Attributes.cs" />
     <Compile Include="Models\Filter.cs" />

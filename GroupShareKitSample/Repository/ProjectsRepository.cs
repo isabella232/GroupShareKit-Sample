@@ -13,18 +13,16 @@ namespace GroupShareKitSample.Repository
 {
     public class ProjectsRepository
     {
-        private readonly IPrincipal _user;
-        private readonly string _token;
+        private readonly IPrincipal user;
 
         public ProjectsRepository(IPrincipal user)
         {
-            _user = user;
-            _token = Helper.HelperMethods.GetToken(user);
+            this.user = user;
         }
 
         public async Task<List<Project>> GetProjects()
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var gsProjects = await gsClient.Project.GetAllProjects();
             var projects = new List<Project>();
 
@@ -51,7 +49,7 @@ namespace GroupShareKitSample.Repository
 
         public async Task<string> CreateProject(string projectName,string templateId,string organizationId,byte[]rawData,DateTime dueDate)
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var projectRequest = new CreateProjectRequest(projectName,organizationId,"",dueDate, templateId,rawData);
             var id = await gsClient.Project.CreateProject(projectRequest);
             return id;
@@ -59,7 +57,7 @@ namespace GroupShareKitSample.Repository
 
         public async Task<List<Template>>GetTemplates()
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var gsTemplates = await gsClient.Project.GetAllTemplates();
             var templates = new List<Template>();
             foreach (var gsTemplate in gsTemplates)
@@ -76,7 +74,7 @@ namespace GroupShareKitSample.Repository
 
         public async  Task<List<Organization>>GetAllOrganizations()
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var gsOrganizations = await gsClient.Organization.GetAll(new OrganizationRequest(false));
             var organizations = new List<Organization>();
             foreach (var gsOrganization in gsOrganizations)

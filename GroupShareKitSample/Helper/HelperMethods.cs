@@ -20,23 +20,33 @@ namespace GroupShareKitSample.Helper
         private static User _authenticatedUser;
         public static string GetToken(IPrincipal user )
         {
-            return ((ClaimsIdentity)user.Identity).FindFirst("Token").Value;
+            var token = ((ClaimsIdentity)user.Identity).FindFirst("Token");
+            if (token == null) return string.Empty;
+            return token.Value;
         }
 
-        public static async Task<GroupShareClient> GetCurrentGsClient(string token, IPrincipal user)
+        public static GroupShareClient GetCurrentGsClient(IPrincipal user)
         {
+            string token = GetToken(user);
             if (token != string.Empty)
             {
                 var userId = user.Identity.GetUserId();
-               
-                var authenticatedUser = await BlobCache.InMemory.GetObject<User>(userId);
+                try
+                {
+                    var authenticatedUser = UserCache.Get(userId);
 
-                var credentials = new Credentials(token, authenticatedUser.UserName, authenticatedUser.Password);
-                var inMemoryCredentials = new InMemoryCredentialStore(credentials);
-                var baseAddress = new Uri(GetGsBaseAdress(user));
-                var groupShareClient = new GroupShareClient(inMemoryCredentials, baseAddress);
+                    if (authenticatedUser == null) return null;
+                    var credentials = new Credentials(token, authenticatedUser.UserName, authenticatedUser.Password);
+                    var inMemoryCredentials = new InMemoryCredentialStore(credentials);
+                    var baseAddress = new Uri(GetGsBaseAdress(user));
+                    var groupShareClient = new GroupShareClient(inMemoryCredentials, baseAddress);
 
-                return groupShareClient;
+                    return groupShareClient;
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
             return null;
         }

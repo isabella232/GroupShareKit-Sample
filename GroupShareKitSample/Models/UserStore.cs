@@ -10,6 +10,7 @@ using Sdl.Community.GroupShareKit.Clients;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using Akavache;
+using GroupShareKitSample.Helper;
 
 namespace GroupShareKitSample.Models
 {
@@ -65,8 +66,7 @@ namespace GroupShareKitSample.Models
                 UserId = Guid.NewGuid(),
                 Password = "hashPassword"
             });
-            //_authenticatedUser = user.Result;
-            Helper.HelperMethods.SetAuthenticatedUser(user.Result);
+            HelperMethods.SetAuthenticatedUser(user.Result);
             return user;
         }
 
@@ -82,9 +82,7 @@ namespace GroupShareKitSample.Models
                 Password = password,
                 Token = gsClient.Credentials.Token
             };
-            //_authenticatedUser = user;
-           // 
-            await BlobCache.InMemory.InsertObject(user.Id, user);
+            UserCache.Insert(user);
             return user;
 
         }

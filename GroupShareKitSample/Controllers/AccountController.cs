@@ -22,9 +22,9 @@ namespace GroupShareKitSample.Controllers
     public class AccountController : Controller
     {
 
-        public UserManagerKit _userManager;
+        private UserManagerKit userManager;
 
-        public static IEnumerable<string> AllScopes =
+        private static IEnumerable<string> allScopes =
            new[]
            {
                 "ManagementRestApi",
@@ -49,9 +49,9 @@ namespace GroupShareKitSample.Controllers
                 if (Uri.IsWellFormedUriString(account.GsLink, UriKind.Absolute))
                 {
                     var userStore= new UserStore();
-                    _userManager = new UserManagerKit(userStore);
+                    userManager = new UserManagerKit(userStore);
 
-                    var gsClient = await _userManager.GetGroupShareClient(account);
+                    var gsClient = await userManager.GetGroupShareClient(account);
 
                     var user = await userStore.FindAsync(account.UserName, account.Password,gsClient);
                     ModelState.Clear();
@@ -83,11 +83,12 @@ namespace GroupShareKitSample.Controllers
         }
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
+
         private async Task  SignInAsync(User user, bool isPersistent)
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
 
-            var identity = await _userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+            var identity = await userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
 
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent}, identity);
         }

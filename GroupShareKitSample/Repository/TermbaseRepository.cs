@@ -16,18 +16,16 @@ namespace GroupShareKitSample.Repository
 {
     public class TermbaseRepository
     {
-        private readonly IPrincipal _user;
-        private readonly string _token;
+        private readonly IPrincipal user;
 
         public TermbaseRepository(IPrincipal user)
         {
-            _user = user;
-            _token = Helper.HelperMethods.GetToken(user);
+            this.user = user;
         }
 
         public async Task<List<Termbase>> GetTermbases()
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var gsTermbases = await gsClient.Terminology.GetTermbases();
            
             var termbases = new List<Termbase>();
@@ -46,7 +44,7 @@ namespace GroupShareKitSample.Repository
 
         public async Task<List<LanguageDirection>> GetLanguagesForTb(string tbId)
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var gsTermbase = await gsClient.Terminology.GetTermbaseById(tbId);
             var languageDirection = new List<LanguageDirection>();
             foreach (var language in gsTermbase.Termbase.Languages)
@@ -64,7 +62,7 @@ namespace GroupShareKitSample.Repository
 
         public async Task<SearchResponse> Search(SearchTerm search)
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var request = new SearchTermRequest(search.TermbaseId, search.Language, search.SearchedTerm);
 
             var term = await gsClient.Terminology.SearchTerm(request);
@@ -73,7 +71,7 @@ namespace GroupShareKitSample.Repository
 
         public async Task<KitConcept> ConceptDetails(string termbaseId, string conceptId)
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var gsConcept = await gsClient.Terminology.GetConcept(termbaseId, conceptId);
 
             var json = JsonConvert.SerializeObject(gsConcept.Concept);
@@ -83,20 +81,20 @@ namespace GroupShareKitSample.Repository
 
         public async Task<ConceptDetails> GetConcept(string termbaseId, string conceptId)
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var gsConcept = await gsClient.Terminology.GetConcept(termbaseId, conceptId);
             return gsConcept;
         }
 
         public async Task UpdateConcept(string termbaseId, ConceptDetails concept)
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             await gsClient.Terminology.EditConcept(termbaseId, concept);
         }
 
         public async Task DeleteConcept(string termbaseId, string conceptId)
         {
-            var gsClient = await Helper.HelperMethods.GetCurrentGsClient(_token, _user);
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             await gsClient.Terminology.DeleteConcept(termbaseId, conceptId);
         }
     }
