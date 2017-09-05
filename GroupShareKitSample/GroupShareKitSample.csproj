@@ -98,18 +98,14 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Sdl.Community.GroupShareKit, Version=1.0.1.0, Culture=neutral, PublicKeyToken=73800669194dd8c8, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\GroupShareKit.1.0.1\lib\netstandard1.3\Sdl.Community.GroupShareKit.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Sdl.Community.GroupShareKit, Version=1.1.0.0, Culture=neutral, PublicKeyToken=73800669194dd8c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\GroupShareKit.1.1.0\lib\netstandard1.3\Sdl.Community.GroupShareKit.dll</HintPath>
     </Reference>
     <Reference Include="Sdl.Core.Bcm.BcmModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c28cdb26c445c888, processorArchitecture=MSIL">
-      <HintPath>..\packages\GroupShareKit.1.0.1\lib\netstandard1.3\Sdl.Core.Bcm.BcmModel.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\GroupShareKit.1.1.0\lib\netstandard1.3\Sdl.Core.Bcm.BcmModel.dll</HintPath>
     </Reference>
     <Reference Include="Sdl.TmService.Sdk, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c28cdb26c445c888, processorArchitecture=MSIL">
-      <HintPath>..\packages\GroupShareKit.1.0.1\lib\netstandard1.3\Sdl.TmService.Sdk.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\GroupShareKit.1.1.0\lib\netstandard1.3\Sdl.TmService.Sdk.dll</HintPath>
     </Reference>
     <Reference Include="Splat, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Splat.1.6.0\lib\Net45\Splat.dll</HintPath>

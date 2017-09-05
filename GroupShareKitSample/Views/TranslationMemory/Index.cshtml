@@ -1,7 +1,7 @@
 ﻿@model GroupShareKitSample.Models.TranslationMemoryViewModel
 <div class="row">
     <div class="col-md-12">
-        <h4 class="textAlign">Search translation unit as plain text</h4>
+        <h4 class="textAlign">Search translation unit and Concordance search as plain text</h4>
     </div>
   
 </div>
@@ -10,7 +10,7 @@
         <form id="searchTmForm">
             <div class="form-horizontal">
                 <div class="form-group">
-                    <label for="tmSelect" class="col-md-2 col-sm-2 control-label textAlign">TranslationMemory:</label>
+                    <label for="tmSelect" class="col-md-2 col-sm-2 control-label textAlign">Translation Memory:</label>
                     <select class="form-control" name="tmselect" id="tmSelect" onchange="tmSelected()" required>
                         @foreach (var tm in Model.TranslationMemories)
                         {
@@ -24,7 +24,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 col-sm-2 control-label textAlign">Target language :</label>
+                    <label class="col-md-2 col-sm-2 control-label textAlign">Target language:</label>
                     <select class="form-control" name="tmselect" id="targetSelect" required>
 
                     </select>
@@ -38,10 +38,17 @@
                     <input type="text" placeholder="Searched term" class="form-control col-md-10 col-sm-10" id="targetSearchedUnit"/>
                 </div>
 
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary" onclick="searchTerm()"> <i class="fa fa-search"></i> Search term</button>
+                <div class="row">
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary" onclick="searchTerm()"> <i class="fa fa-search"></i> Search term</button>
 
+                    </div>
+                    <div class=" col-md-10 concordanceSearchContainer">
+                        <button type="submit" class="btn btn-success" onclick="concordanceSearch()" id="concordanceSearchBtn"> <i class="fa fa-search"></i> Concordance seach</button>
+
+                    </div>
                 </div>
+              
             </div>
         </form>
     </div>
@@ -59,16 +66,37 @@
 
         function searchTerm() {
             $('#tmSearch').empty();
-            document.getElementById('loading').style.display = 'initial';
-            var sourceCode =document.getElementById('sourceSelect').value;
+            var sourceCode = document.getElementById('sourceSelect').value;
             var targetCode = document.getElementById('targetSelect').value;
             var tmId = document.getElementById('tmSelect').value;
             var sourceSearchedUnit = $('#sourceSearchedUnit').val();
             var targetSearchedUnit = $('#targetSearchedUnit').val();
+
+            document.getElementById('loading').style.display = 'initial';
+
             $.ajax({
                 url: '@Url.Action("SearchTerm")',
                 cache: false,
                 data: { 'sourceSearchedUnit': sourceSearchedUnit, 'targetSearchedUnit': targetSearchedUnit, 'tmId': tmId, 'sourceCode': sourceCode, 'targetCode': targetCode },
+                success: function(response) {
+                    document.getElementById('loading').style.display = 'none';
+                    $('#tmSearch').html(response);
+                }
+            });
+        }
+        function concordanceSearch() {
+            document.getElementById('loading').style.display = 'initial';
+            var sourceCode = document.getElementById('sourceSelect').value;
+            var targetCode = document.getElementById('targetSelect').value;
+            var tmId = document.getElementById('tmSelect').value;
+            var sourceSearchedUnit = $('#sourceSearchedUnit').val();
+            var targetSearchedUnit = $('#targetSearchedUnit').val();
+
+            var concordancePenalty = $('#penalty').val();
+              $.ajax({
+                url: '@Url.Action("ConcordanceSearch")',
+                cache: false,
+                data: { 'sourceSearchedUnit': sourceSearchedUnit, 'targetSearchedUnit': targetSearchedUnit, 'tmId': tmId, 'sourceCode': sourceCode, 'targetCode': targetCode},
                 success: function(response) {
                     document.getElementById('loading').style.display = 'none';
                     $('#tmSearch').html(response);
@@ -118,8 +146,8 @@
                     targetSelect.appendChild(option);
                 }
             }
-        
-           
+
+
         }
     </script>
 }

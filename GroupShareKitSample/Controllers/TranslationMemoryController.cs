@@ -29,5 +29,13 @@ namespace GroupShareKitSample.Controllers
             _tmVm.SearchResult = terms;
             return PartialView("TmSearchResult",_tmVm);
         }
+
+        public async Task<ActionResult> ConcordanceSearch(string sourceSearchedUnit, string targetSearchedUnit,
+            string tmId, string sourceCode, string targetCode)
+        {
+            var concordanceResult = await _tmRepository.ConcordanceSearch(sourceSearchedUnit, targetSearchedUnit, tmId, sourceCode, targetCode);
+            _tmVm.SearchResult = concordanceResult;
+            return PartialView("TmSearchResult", _tmVm);
+        }
     }
 }

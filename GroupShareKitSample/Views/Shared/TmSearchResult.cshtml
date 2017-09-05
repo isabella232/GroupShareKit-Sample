@@ -1,23 +1,39 @@
 ﻿@model GroupShareKitSample.Models.TranslationMemoryViewModel
 
 <div class="col-md-12 col-sm-12">
-    <h4>Search results</h4>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Source text</th>
-                <th>Target text</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.SearchResult)
-            {
+    @if (Model.SearchResult.Count > 0)
+    {
+        <h4>Search results</h4>
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>@item.SourceText</td>
-                    <td>@item.TargetText</td>
+                    <th>Source text</th>
+                    @{
+                        var penalty = Model.SearchResult.FirstOrDefault(p => p.Penalty != null);
+                        if (penalty != null)
+                        {
+                            <th class="penaltyAlign">Match score</th>
+                        }
+                    }
+                    <th>Target text</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SearchResult)
+                {
+                    <tr>
+                        <td>@item.SourceText</td>
+                        @if (item.Penalty != null)
+                        {
+                            <td class="penaltyAlign">@item.Penalty%</td>
+                        }
+                        <td>@item.TargetText</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+                        }
+                        else
+                        { <h4>There are no search result to display</h4>}
 </div>
 

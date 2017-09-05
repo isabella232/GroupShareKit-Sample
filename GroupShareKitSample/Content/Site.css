@@ -93,3 +93,9 @@ a {
     margin-right: 1%;
     margin-bottom: 1%;
 }
+.concordanceSearchContainer{
+    padding-left:0px !important;
+}
+.penaltyAlign{
+    text-align:center;
+}

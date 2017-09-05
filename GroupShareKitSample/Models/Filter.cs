@@ -9,5 +9,6 @@ namespace GroupShareKitSample.Models
     {
         public string SourceText { get; set; }
         public string TargetText  { get; set; }
+        public string Penalty { get; set; }
     }
 }

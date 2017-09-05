@@ -54,6 +54,44 @@ namespace GroupShareKitSample.Repository
             return kitTm;
         }
 
+        public async Task<List<Filter>> ConcordanceSearch(string sourceSearchedUnit, string targetSearchedUnit, string tmId, string sourceCode, string targetCode)
+        {
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
+            ConcordanceSearchRequest concordanceSearchRequest;
+
+            //check if is target concordance search
+            if (!string.IsNullOrEmpty(targetSearchedUnit))
+            {
+                var concordanceSearchSettings = new ConcordanceSearchSettings
+                {
+                    IsTargetConcodanceSearch = true
+                };
+                 concordanceSearchRequest = new ConcordanceSearchRequest(new Guid(tmId), targetSearchedUnit, sourceCode, targetCode,concordanceSearchSettings);
+            }
+            else
+            {
+                concordanceSearchRequest = new ConcordanceSearchRequest(new Guid(tmId), sourceSearchedUnit, sourceCode, targetCode);
+            }
+            
+
+            var concordanceResponse = await gsClient.TranslationMemories.ConcordanceSearchAsPlainText(concordanceSearchRequest);
+
+            var searchResults = new List<Filter>();
+            foreach (var unit in concordanceResponse)
+            {
+                var result = new Filter
+                {
+                    SourceText = unit.Source,
+                    TargetText = unit.Target,
+                    Penalty = unit.MatchScore
+                };
+                searchResults.Add(result);
+            }
+            return searchResults;
+
+
+        }
+
         public async Task<List<Filter>> FilterAsPlainText(string sourceSearchedUnit,string targetSearchedUnit, string tmId, string sourceCode, string targetCode)
         {
             var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
