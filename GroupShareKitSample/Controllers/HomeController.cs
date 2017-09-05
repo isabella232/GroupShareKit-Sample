@@ -13,6 +13,7 @@ using GroupShareKitSample.Repository;
 using Microsoft.AspNet.Identity;
 using System.IO.Compression;
 using GroupShareKitSample.Helper;
+using Newtonsoft.Json;
 
 namespace GroupShareKitSample.Controllers
 {
@@ -101,6 +102,15 @@ namespace GroupShareKitSample.Controllers
             }catch(Exception e) { }
             
             await _projectsRepository.CreateProject(projectName, templateId, organizationId, _projectsData,date);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> AnalyseProject(string projectId)
+        {
+            var analyseResult = await _projectsRepository.AnalyseProject(projectId);
+
+            var json = JsonConvert.SerializeObject(analyseResult);
+            return Json(json, JsonRequestBehavior.AllowGet);
         }
     }
 }

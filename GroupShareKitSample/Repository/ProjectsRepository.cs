@@ -89,5 +89,22 @@ namespace GroupShareKitSample.Repository
 
             return organizations;
         }
+
+        public  async Task<List<Analyse>> AnalyseProject(string projectId)
+        {
+            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
+            var gsAnalyse = await gsClient.Project.GetAnalysisReportsAsHtml(projectId, null);
+            var analyseResults = new List<Analyse>();
+            foreach(var analyse in gsAnalyse)
+            {
+                var analyseReport = new Analyse
+                {
+                    LanguageCode = analyse.LanguageCode,
+                    Report = analyse.Report
+                };
+                analyseResults.Add(analyseReport);
+            }
+            return analyseResults;
+        }
     }
 }

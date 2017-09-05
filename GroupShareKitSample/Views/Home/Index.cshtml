@@ -95,6 +95,7 @@
                     <th> Due date</th>
                     <th>Source language</th>
                     <th>Target language</th>
+                    <th>Analyse project</th>
                 </tr>
             </thead>
             <tbody>
@@ -105,6 +106,7 @@
                         <td> @item.DueDate</td>
                         <td>@item.SourceLanguage</td>
                         <td>@item.TargetLanguage</td>
+                        <td><a onclick="analyse('@item.ProjectId')"><i class="fa fa-pie-chart" aria-hidden="true"></i></a></td>
                     </tr>
                 }
             </tbody>
@@ -123,19 +125,19 @@
             uploadMultiple: true,
             parallelUploads: 25,
             maxFiles: 25,
-            init: function() {
+            init: function () {
                 var myDropzone = this;
-                this.on("maxfilesexceeded", function(data) {
+                this.on("maxfilesexceeded", function (data) {
                     var res = eval('(' + data.xhr.responseText + ')');
 
                 });
-                this.on("addedfile", function(file) {
+                this.on("addedfile", function (file) {
 
                     // Create the remove button
                     var removeButton = Dropzone.createElement("<button class='btn btn-primary'>Remove file</button>");
 
                     // Listen to the click event
-                    removeButton.addEventListener("click", function(e) {
+                    removeButton.addEventListener("click", function (e) {
                         // Make sure the button click doesn't submit the form:
                         e.preventDefault();
                         e.stopPropagation();
@@ -148,15 +150,15 @@
                     // Add the button to the file preview element.
                     file.previewElement.appendChild(removeButton);
                 });
-                this.on("complete", function() {
+                this.on("complete", function () {
                     $('#settingsModal').modal('show');
                 });
-                $("#submit-all").click(function(e) {
+                $("#submit-all").click(function (e) {
                     e.preventDefault();
                     e.stopPropagation();
                     myDropzone.processQueue();
                 });
-              
+
             }
         };
 
@@ -164,11 +166,11 @@
             var projectName = $('#projectName').val();
             var templateSelect = document.getElementById('templateSelect');
             var templateId = templateSelect[templateSelect.selectedIndex].value;
-             var dueDate = $("input.datepicker").val();
+            var dueDate = $("input.datepicker").val();
             var organizationSelect = document.getElementById('organizationSelect');
             var organizationId = organizationSelect[organizationSelect.selectedIndex].value;
 
-       
+
             $.ajax({
                 url: '@Url.Action("CreateProject")',
                 type: 'POST',
@@ -176,6 +178,23 @@
                 data: { 'projectName': projectName, 'templateId': templateId, 'organizationId': organizationId,'dueDate':dueDate },
                 success:function() {
                     location.reload();
+                }
+            });
+        }
+
+        function analyse(projectId) {
+            var test = projectId;
+             $.ajax({
+                url: '@Url.Action("AnalyseProject")',
+                type: 'Get',
+                chache: false,
+                data: { 'projectId': projectId },
+                success:function(response) {
+                    var json = JSON.parse(response);
+                    json.forEach(function (item) {
+                        var myWindow = window.open("/Analyse/Index", "_blank");
+                        myWindow.document.write(item.Report);
+                    });
                 }
             });
         }
