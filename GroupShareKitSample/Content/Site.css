@@ -99,3 +99,7 @@ a {
 .penaltyAlign{
     text-align:center;
 }
+#message {
+    display: none;
+    color:red;
+}

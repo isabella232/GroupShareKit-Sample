@@ -86,6 +86,10 @@
     </div>
 </div>
 
+<div id="message">
+
+</div>
+
 <div class="row">
     <div class="table-responsive">
         <table class="table table-striped">
@@ -191,10 +195,18 @@
                 data: { 'projectId': projectId },
                 success:function(response) {
                     var json = JSON.parse(response);
-                    json.forEach(function (item) {
-                        var myWindow = window.open("/Analyse/Index", "_blank");
-                        myWindow.document.write(item.Report);
-                    });
+                    if (json.length == 0) {
+                        document.getElementById("message").style.display = 'initial';
+                        document.getElementById("message").innerHTML = "Not available. Only projects created from SDL Trados GroupShare have reports available on the server.";
+                    } else {
+                        document.getElementById("message").style.display = 'none';
+                        json.forEach(function (item) {
+                            var myWindow = window.open("/Analyse/Index", "_blank");
+                            myWindow.document.title = "Analyse result";
+                            myWindow.document.write(item.Report);
+                        });
+                    }
+
                 }
             });
         }
