@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using Akavache;
+﻿using GroupShareKitSample.Helper;
 using GroupShareKitSample.Models;
 using GroupShareKitSample.Repository;
-using Microsoft.AspNet.Identity;
-using System.IO.Compression;
-using GroupShareKitSample.Helper;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace GroupShareKitSample.Controllers
 {
-
     [GSAuthorizeAttribute]
     public class HomeController : Controller
     {
         private static ProjectsRepository _projectsRepository;
-        private static byte[] _projectsData;
+        private static string _zipPath = Path.Combine(Path.GetTempPath(), "GSFiles.zip");
 
         public async Task<ActionResult> Index()
         {
@@ -43,6 +36,10 @@ namespace GroupShareKitSample.Controllers
 
         public ActionResult UploadFile(string template, string organization)
         {
+            // remove the zip folder if exists (used in case user does not finalize the project creation, and arhive is already created)
+            HelperMethods.DeleteFolder(_zipPath);
+
+            // get files from the server request
             var files = new Dictionary<byte[], string>();
             foreach (string file in Request.Files)
             {
@@ -57,52 +54,36 @@ namespace GroupShareKitSample.Controllers
                     }
                 }
             }
-            using (var compressedFileStream = new MemoryStream())
+
+            // add each file to a local zip (used when creating project)
+            using (ZipArchive archive = new ZipArchive(System.IO.File.Create(_zipPath), ZipArchiveMode.Create))
             {
-                using (var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Update, false))
-                {
-                    foreach (var file in files)
+                foreach (var file in files)
+                { 
+                    ZipArchiveEntry entry = archive.CreateEntry(file.Value);
+                    using (BinaryWriter writer = new BinaryWriter(entry.Open()))
                     {
-                        var zipEntry = zipArchive.CreateEntry(file.Value);
-                        //Get the stream of the attachment
-
-                        using (var originalFileStream = new MemoryStream(file.Key))
-                        {
-                            using (var zipEntryStream = zipEntry.Open())
-                            {
-                                originalFileStream.CopyTo(zipEntryStream);
-                            }
-                        }
-
+                        writer.Write(file.Key);
                     }
                 }
-                var test = new FileContentResult(compressedFileStream.ToArray(), "application/zip")
-                {
-                    FileDownloadName = "Filename.zip"
-                };
-                _projectsData = test.FileContents;
             }
-
-
-         
-
-
-
             return null;
         }
 
         [HttpPost]
-        public async Task CreateProject(string projectName, string templateId, string organizationId,string dueDate)
+        public async Task CreateProject(string projectName, string templateId, string organizationId, string dueDate)
         {
             DateTime date = DateTime.Now.AddDays(7);
             try
             {
-
                 date = Convert.ToDateTime(dueDate);
-            }catch(Exception e) { }
-            
-            await _projectsRepository.CreateProject(projectName, templateId, organizationId, _projectsData,date);
-        }
+                await _projectsRepository.CreateProject(projectName, templateId, organizationId, date, _zipPath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }      
 
         [HttpGet]
         public async Task<JsonResult> AnalyseProject(string projectId)

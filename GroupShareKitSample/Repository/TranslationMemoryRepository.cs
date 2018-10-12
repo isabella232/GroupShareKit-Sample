@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Sdl.Community.GroupShareKit.Models.Response;
+using Sdl.Community.GroupShareKit.Models.Response.TranslationMemory;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using Sdl.Community.GroupShareKit.Models.Response;
-using Sdl.Community.GroupShareKit.Models.Response.TranslationMemory;
 using Filter = GroupShareKitSample.Models.Filter;
 using LanguageDirection = GroupShareKitSample.Models.LanguageDirection;
 using TranslationMemory = GroupShareKitSample.Models.TranslationMemory;
-
 
 namespace GroupShareKitSample.Repository
 {
@@ -22,12 +20,12 @@ namespace GroupShareKitSample.Repository
             this.user = user;
         }
 
-        public async Task<List<TranslationMemory>>GetTms()
+        public async Task<List<TranslationMemory>> GetTms()
         {
             var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var gsTranslationMemories = await gsClient.TranslationMemories.GetTms();
             var kitTm = new List<TranslationMemory>();
-            
+
             foreach (var tm in gsTranslationMemories.Items)
             {
                 var translationMemory = new TranslationMemory
@@ -47,10 +45,8 @@ namespace GroupShareKitSample.Repository
                     };
                     translationMemory.LanguageDirections.Add(language);
                 }
-               
                 kitTm.Add(translationMemory);
             }
-         
             return kitTm;
         }
 
@@ -62,17 +58,12 @@ namespace GroupShareKitSample.Repository
             //check if is target concordance search
             if (!string.IsNullOrEmpty(targetSearchedUnit))
             {
-                var concordanceSearchSettings = new ConcordanceSearchSettings
-                {
-                    IsTargetConcodanceSearch = true
-                };
-                 concordanceSearchRequest = new ConcordanceSearchRequest(new Guid(tmId), targetSearchedUnit, sourceCode, targetCode,concordanceSearchSettings);
+                concordanceSearchRequest = new ConcordanceSearchRequest(new Guid(tmId), targetSearchedUnit, sourceCode, targetCode, null);
             }
             else
             {
                 concordanceSearchRequest = new ConcordanceSearchRequest(new Guid(tmId), sourceSearchedUnit, sourceCode, targetCode);
             }
-            
 
             var concordanceResponse = await gsClient.TranslationMemories.ConcordanceSearchAsPlainText(concordanceSearchRequest);
 
@@ -88,14 +79,12 @@ namespace GroupShareKitSample.Repository
                 searchResults.Add(result);
             }
             return searchResults;
-
-
         }
 
-        public async Task<List<Filter>> FilterAsPlainText(string sourceSearchedUnit,string targetSearchedUnit, string tmId, string sourceCode, string targetCode)
+        public async Task<List<Filter>> FilterAsPlainText(string sourceSearchedUnit, string targetSearchedUnit, string tmId, string sourceCode, string targetCode)
         {
             var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
-            
+
             var languageDetails = new LanguageDetailsRequest(sourceSearchedUnit, sourceCode, targetSearchedUnit, targetCode);
             var tmDetails = new TranslationMemoryDetailsRequest(new Guid(tmId), 0, 50);
             var gsUnits = await gsClient.TranslationMemories.FilterAsPlainText(languageDetails, tmDetails, true, true);

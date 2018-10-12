@@ -162,7 +162,6 @@
                     e.stopPropagation();
                     myDropzone.processQueue();
                 });
-
             }
         };
 
@@ -174,14 +173,20 @@
             var organizationSelect = document.getElementById('organizationSelect');
             var organizationId = organizationSelect[organizationSelect.selectedIndex].value;
 
-
             $.ajax({
                 url: '@Url.Action("CreateProject")',
                 type: 'POST',
                 chache: false,
-                data: { 'projectName': projectName, 'templateId': templateId, 'organizationId': organizationId,'dueDate':dueDate },
-                success:function() {
+                dataType: 'json',
+                data: { 'projectName': projectName, 'templateId': templateId, 'organizationId': organizationId, 'dueDate': dueDate },
+                success: function () {
                     location.reload();
+                },
+                error: function (ex, status) {
+                    if (status == 'error') {
+                        alert('Error occured while creating project. ' + 'Status code: ' + ex.status + ': ' + ex.statusText);
+                        location.reload();
+                    }                    
                 }
             });
         }
@@ -206,7 +211,6 @@
                             myWindow.document.write(item.Report);
                         });
                     }
-
                 }
             });
         }
@@ -218,7 +222,6 @@
         }
         //initialize date picker
         $('.datepicker').datepicker();
-
-
+        
     </script>
 }

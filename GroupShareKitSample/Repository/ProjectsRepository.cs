@@ -1,13 +1,10 @@
-﻿using System;
-using System.CodeDom;
+﻿using GroupShareKitSample.Models;
+using Sdl.Community.GroupShareKit.Clients;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using System.Web;
-using GroupShareKitSample.Models;
-using Sdl.Community.GroupShareKit;
-using Sdl.Community.GroupShareKit.Clients;
 
 namespace GroupShareKitSample.Repository
 {
@@ -47,15 +44,39 @@ namespace GroupShareKitSample.Repository
             return projects;
         }
 
-        public async Task<string> CreateProject(string projectName,string templateId,string organizationId,byte[]rawData,DateTime dueDate)
+        public async Task<string> CreateProject(string projectName, string templateId, string organizationId, DateTime dueDate, string zipPath)
         {
-            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
-            var projectRequest = new CreateProjectRequest(projectName,organizationId,"",dueDate, templateId,rawData);
-            var id = await gsClient.Project.CreateProject(projectRequest);
-            return id;
+            try
+            {
+                // get user credentials
+                var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
+
+                // read zip files as bytes
+                var rawData = File.ReadAllBytes(zipPath);
+
+                // create project using necessary information
+                var projectId = await gsClient.Project.CreateProject(new CreateProjectRequest(
+                    projectName,
+                    organizationId,
+                    null,
+                    dueDate,
+                    templateId,
+                    rawData));
+
+                // delete the zip folder from the local machine
+                Helper.HelperMethods.DeleteFolder(zipPath);
+
+                return projectId;
+            }
+            catch (Exception ex)
+            {
+                // if the project creation process is crashing, delete the exiting zip folder from the local machine
+                Helper.HelperMethods.DeleteFolder(zipPath);
+                throw new Exception(ex.Message);
+            }
         }
 
-        public async Task<List<Template>>GetTemplates()
+        public async Task<List<Template>> GetTemplates()
         {
             var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var gsTemplates = await gsClient.Project.GetAllTemplates();
@@ -72,7 +93,7 @@ namespace GroupShareKitSample.Repository
             return templates;
         }
 
-        public async  Task<List<Organization>>GetAllOrganizations()
+        public async Task<List<Organization>> GetAllOrganizations()
         {
             var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
             var gsOrganizations = await gsClient.Organization.GetAll(new OrganizationRequest(false));
@@ -86,7 +107,6 @@ namespace GroupShareKitSample.Repository
                 };
                 organizations.Add(organization);
             }
-
             return organizations;
         }
 
