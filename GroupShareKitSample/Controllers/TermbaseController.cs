@@ -1,13 +1,10 @@
-﻿using System;
+﻿using GroupShareKitSample.Models;
+using GroupShareKitSample.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel.Description;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using GroupShareKitSample.Models;
-using GroupShareKitSample.Repository;
-using Sdl.Community.GroupShareKit.Models.Response;
 
 namespace GroupShareKitSample.Controllers
 {
@@ -18,14 +15,23 @@ namespace GroupShareKitSample.Controllers
         // GET: Termbase
         public async Task<ActionResult> Index()
         {
-            _termRepository = new TermbaseRepository(HttpContext.User);
-            var termbases = await _termRepository.GetTermbases();
-            _viewModel.Search = new SearchTerm();
-            _viewModel.Termbases = termbases;
+            try
+            {
+                _termRepository = new TermbaseRepository(HttpContext.User);
+                var termbases = await _termRepository.GetTermbases();
+                _viewModel.Search = new SearchTerm();
+                _viewModel.Termbases = termbases;
 
-            return View(_viewModel);
+                return View(_viewModel);
+            }
+            catch (Exception ex)
+            {
+                _viewModel.Termbases = new List<Models.Termbase>();
+                _viewModel.Search = new SearchTerm();
+                _viewModel.Message = $"Termbases could not be retrieved. Error message: '{ex.Message }'";
+                return View(_viewModel);
+            }
         }
-
 
         public async Task<ActionResult> Search(string term,string language, string termbaseId)
         {
@@ -70,7 +76,6 @@ namespace GroupShareKitSample.Controllers
                             User = "",
                             Type = "Create"
                         }
-
                     }
                 },
                 Text = newTerm

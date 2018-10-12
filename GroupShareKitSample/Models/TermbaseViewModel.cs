@@ -10,5 +10,6 @@ namespace GroupShareKitSample.Models
         public SearchTerm Search { get; set; }
         public List<Termbase> Termbases { get; set; }
         public List<Term> SearchResult { get; set; }
+        public string Message { get; set; }
     }
 }

@@ -25,39 +25,53 @@ namespace GroupShareKitSample.Repository
 
         public async Task<List<Termbase>> GetTermbases()
         {
-            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
-            var gsTermbases = await gsClient.Terminology.GetTermbases();
-           
-            var termbases = new List<Termbase>();
-            foreach (var gsTermbase in gsTermbases.Termbases)
+            try
             {
-                var termbase = new Termbase
+                var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
+                var gsTermbases = await gsClient.Terminology.GetTermbases();
+
+                var termbases = new List<Termbase>();
+                foreach (var gsTermbase in gsTermbases.Termbases)
                 {
-                    Id = gsTermbase.Id,
-                    Name = gsTermbase.Name,
-                    LanguageDirections = await GetLanguagesForTb(gsTermbase.Id)
-                };
-                termbases.Add(termbase);
+                    var termbase = new Termbase
+                    {
+                        Id = gsTermbase.Id,
+                        Name = gsTermbase.Name,
+                        LanguageDirections = await GetLanguagesForTb(gsTermbase.Id)
+                    };
+                    termbases.Add(termbase);
+                }
+                return termbases;
             }
-            return termbases;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<List<LanguageDirection>> GetLanguagesForTb(string tbId)
         {
-            var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
-            var gsTermbase = await gsClient.Terminology.GetTermbaseById(tbId);
-            var languageDirection = new List<LanguageDirection>();
-            foreach (var language in gsTermbase.Termbase.Languages)
+            try
             {
-                var lgDirection = new GroupShareKitSample.Models.LanguageDirection
+                var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
+                var gsTermbase = await gsClient.Terminology.GetTermbaseById(tbId);
+                var languageDirection = new List<LanguageDirection>();
+                foreach (var language in gsTermbase.Termbase.Languages)
                 {
-                    SourceCode = language.Code,
-                    SourceDisplayName = language.Name
+                    var lgDirection = new GroupShareKitSample.Models.LanguageDirection
+                    {
+                        SourceCode = language.Code,
+                        SourceDisplayName = language.Name
 
-                };
-                languageDirection.Add(lgDirection);
+                    };
+                    languageDirection.Add(lgDirection);
+                }
+                return languageDirection;
             }
-            return languageDirection;
+            catch(Exception ex)
+            {
+                throw new Exception($"{ex.Message} Source: {ex.Source}");
+            }
         }
 
         public async Task<SearchResponse> Search(SearchTerm search)

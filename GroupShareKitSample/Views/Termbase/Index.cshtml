@@ -15,7 +15,7 @@
                 <div class="form-horizontal">
                     <div class="form-group">
                         <label for="tbselect" class="col-md-2 control-label textAlign">Termbase:</label>
-                        <select class="form-control" name="tbselect" id="tbselect" onchange="termbaseSelect()"required >
+                        <select class="form-control" name="tbselect" id="tbselect" onchange="termbaseSelect()" required>
                             @foreach (var termbase in Model.Termbases)
                             {
                                 <option value="@termbase.Id">@termbase.Name</option>
@@ -24,20 +24,21 @@
                     </div>
                     <div class="form-group">
                         <label class="col-md-2 control-label textAlign">Language:</label>
-                        <select class="form-control" id="languageSelect" onchange="languageChanged()" required>
-                        </select>
+                        <select class="form-control" id="languageSelect" onchange="languageChanged()" required></select>
                     </div>
                     <div class="form-group">
                         <label class="col-md-2 control-label textAlign">Searched term:</label>
-                        <input type="text" placeholder="Term searched" class="form-control col-md-10" id="searchedTerm" name="searchedTerm" required/>
+                        <input type="text" placeholder="Term searched" class="form-control col-md-10" id="searchedTerm" name="searchedTerm" required />
                     </div>
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary" onclick="searchTermbase()"> <i class="fa fa-search"></i> Search</button>
-
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label textAlign">@Model.Message</label>
                     </div>
                 </div>
-            </form>
+</form>
         </div>
     </div>
 
