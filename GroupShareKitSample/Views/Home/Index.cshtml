@@ -177,16 +177,9 @@
                 url: '@Url.Action("CreateProject")',
                 type: 'POST',
                 chache: false,
-                dataType: 'json',
-                data: { 'projectName': projectName, 'templateId': templateId, 'organizationId': organizationId, 'dueDate': dueDate },
-                success: function () {
+                data: { 'projectName': projectName, 'templateId': templateId, 'organizationId': organizationId,'dueDate':dueDate },
+                success:function() {
                     location.reload();
-                },
-                error: function (ex, status) {
-                    if (status == 'error') {
-                        alert('Error occured while creating project. ' + 'Status code: ' + ex.status + ': ' + ex.statusText);
-                        location.reload();
-                    }                    
                 }
             });
         }
