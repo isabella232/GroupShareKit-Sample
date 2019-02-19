@@ -25,36 +25,42 @@ namespace GroupShareKitSample.Repository
 
         public async Task<List<Termbase>> GetTermbases()
         {
-            try
-            {
                 var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
                 var gsTermbases = await gsClient.Terminology.GetTermbases();
 
                 var termbases = new List<Termbase>();
                 foreach (var gsTermbase in gsTermbases.Termbases)
                 {
+                    List<LanguageDirection> languageDirections;
+                    try
+                    {
+                        languageDirections = await GetLanguagesForTb(gsTermbase.Id);
+                    }
+                    catch { continue;}
+
                     var termbase = new Termbase
                     {
                         Id = gsTermbase.Id,
                         Name = gsTermbase.Name,
-                        LanguageDirections = await GetLanguagesForTb(gsTermbase.Id)
+                        LanguageDirections = languageDirections
                     };
                     termbases.Add(termbase);
                 }
                 return termbases;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
         }
 
         public async Task<List<LanguageDirection>> GetLanguagesForTb(string tbId)
         {
-            try
-            {
                 var gsClient = Helper.HelperMethods.GetCurrentGsClient(user);
-                var gsTermbase = await gsClient.Terminology.GetTermbaseById(tbId);
+                TermbaseResponse gsTermbase;
+                try
+                {
+                    gsTermbase = await gsClient.Terminology.GetTermbaseById(tbId);
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception($"{ex.Message} Source: {ex.Source}");
+                }
                 var languageDirection = new List<LanguageDirection>();
                 foreach (var language in gsTermbase.Termbase.Languages)
                 {
@@ -67,11 +73,6 @@ namespace GroupShareKitSample.Repository
                     languageDirection.Add(lgDirection);
                 }
                 return languageDirection;
-            }
-            catch(Exception ex)
-            {
-                throw new Exception($"{ex.Message} Source: {ex.Source}");
-            }
         }
 
         public async Task<SearchResponse> Search(SearchTerm search)
